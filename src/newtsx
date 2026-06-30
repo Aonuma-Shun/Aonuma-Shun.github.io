@@ -1,0 +1,345 @@
+import { useState, type ReactNode } from 'react'
+import './App.css'
+
+type NewsItem = {
+  date: string
+  text: string
+}
+
+type Publication = {
+  title: string
+  authors: ReactNode
+  venue: string
+  year: string
+  role: string
+  status: string
+  description: string
+  image?: string
+  tags?: string[]
+  links?: {
+    label: string
+    url: string
+  }[]
+}
+
+const news: NewsItem[] = [
+  {
+    date: '2026.06',
+    text: 'Personal academic homepage under construction.',
+  },
+  {
+    date: '2026.06',
+    text: 'Currently pursuing an M.S. degree in Control Engineering at Beijing Institute of Technology.',
+  },
+]
+
+const publications: Publication[] = [
+  {
+    title:
+      'Optimal Prediction-Correction Algorithm Using Sparse Linear Extrapolation for Time-Varying Optimization',
+    authors: (
+  <>
+    <strong className="myName">Zhonghao Lin</strong>, Jie Hou
+    <sup className="correspondingAuthor" title="Corresponding author">
+      *
+    </sup>
+    , Xianlin Zeng
+  </>
+),
+    venue: 'IEEE Transactions on Signal Processing',
+    year: '',
+    role: 'First author',
+    status: 'Accepted in Jun. 2026 · Published in Jun. 2026',
+    description:
+      'An optimal sparse linear extrapolation based prediction-correction algorithm for efficient tracking in strongly convex time-varying optimization.',
+    image: '/images/TSP-SEPC.png',
+    tags: ['IEEE TSP', 'Time-varying optimization', 'Prediction-correction'],
+    links: [
+      {
+        label: 'IEEE Xplore',
+        url: 'https://ieeexplore.ieee.org/document/11563734/',
+      },
+      {
+        label: 'PDF',
+        url: '/files/tsp-2026.pdf',
+      },
+    ],
+  },
+  {
+    title:
+      'Primal-Dual Prediction-Correction Method with Tunable Memory for Linearly Constrained Time-Varying Convex Optimization',
+    authors: (
+  <>
+    <strong className="myName">Zhonghao Lin</strong>, Xianlin Zeng, Jie Hou
+    <sup className="correspondingAuthor" title="Corresponding author">
+      *
+    </sup>
+    , Jian Sun, Jie Chen
+  </>
+),
+    venue: 'Journal of Systems Science and Complexity',
+    year: '',
+    role: 'First author',
+    status: 'Accepted in Feb. 2026 · Published in Apr. 2026',
+    description:
+      'A primal-dual prediction-correction method with tunable memory for linearly constrained time-varying convex optimization.',
+    image: '/images/JSSC-PDPC.png',
+    tags: ['JSSC', 'Primal-dual method', 'Constrained optimization'],
+    links: [
+      {
+        label: 'Springer',
+        url: 'https://link.springer.com/article/10.1007/s11424-026-5499-7',
+      },
+      {
+        label: 'PDF',
+        url: '/files/jssc-2026.pdf',
+      },
+    ],
+  },
+]
+
+function App() {
+  const [showRealPhoto, setShowRealPhoto] = useState(false)
+
+  const avatarSrc = showRealPhoto ? '/images/profile.jpg' : '/images/avatar.jpg'
+  const avatarAlt = showRealPhoto ? 'Zhonghao Lin profile photo' : 'Anime avatar'
+  const avatarButtonText = showRealPhoto ? 'Switch to anime avatar' : 'Switch to profile photo'
+
+  const toggleAvatar = () => {
+    setShowRealPhoto((current) => !current)
+  }
+
+  return (
+    <main className="page">
+      <header className="hero">
+        <nav className="nav">
+          <div className="brand">Zhonghao Lin</div>
+
+          <div className="navLinks">
+            <a href="#about">About</a>
+            <a href="#news">News</a>
+            <a href="#publications">Publications</a>
+            <a href="#photos">Photos</a>
+            <a href="#interests">Interests</a>
+          </div>
+        </nav>
+
+        <section className="heroContent">
+          <div className="avatarPanel">
+  <img
+    key={avatarSrc}
+    className="avatar"
+    src={avatarSrc}
+    alt={avatarAlt}
+    title={avatarButtonText}
+    onClick={toggleAvatar}
+  />
+
+  <button className="avatarToggle" type="button" onClick={toggleAvatar}>
+    {avatarButtonText}
+  </button>
+</div>
+
+          <div className="heroText">
+            <p className="eyebrow">M.S. Student · Control Engineering · Beijing Institute of Technology</p>
+            <h1>Zhonghao Lin</h1>
+            <p className="chineseName">林仲豪</p>
+
+            <p className="intro">
+              I am currently pursuing an M.S. degree in Control Engineering at Beijing Institute
+              of Technology. My research interests include time-varying optimization, online
+              optimization, distributed optimization, and their applications in dynamic systems,
+              signal processing, and target tracking.
+            </p>
+
+            <div className="actions">
+            <a href="zhlin2002@bit.edu.cn">Email: zhlin2002@bit.edu.cn</a>
+
+  <a href="https://github.com/Aonuma-Shun" target="_blank" rel="noreferrer">
+    GitHub
+  </a>
+
+  <a href="/files/cv-en.pdf" target="_blank" rel="noreferrer">
+    CV
+  </a>
+
+  <a href="/files/cv-zh.pdf" target="_blank" rel="noreferrer">
+    中文简历
+  </a>
+</div>
+          </div>
+        </section>
+      </header>
+
+      <section id="about" className="section">
+        <div className="sectionHeader">
+          <p>01</p>
+          <h2>About</h2>
+        </div>
+
+        <div className="card aboutCard">
+  <p>
+    I am currently pursuing an M.S. degree in Control Engineering at Beijing Institute
+    of Technology.
+  </p>
+  <p>
+    My research focuses on time-varying optimization, online optimization, and
+    distributed optimization. I am also interested in applying optimization methods
+    to dynamic problems such as localization, signal processing, and target tracking.
+  </p>
+  <p>
+    This website is still under construction. More details about my research,
+    publications, projects, and personal interests will be added soon.
+  </p>
+</div>
+      </section>
+
+      <section id="news" className="section">
+        <div className="sectionHeader">
+          <p>02</p>
+          <h2>News</h2>
+        </div>
+
+        <div className="timeline">
+          {news.map((item) => (
+            <div className="timelineItem" key={`${item.date}-${item.text}`}>
+              <span className="date">{item.date}</span>
+              <p>{item.text}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+     <section id="publications" className="section">
+  <div className="sectionHeader">
+    <p>03</p>
+    <h2>Publications</h2>
+  </div>
+
+  <div className="publicationList">
+    {publications.map((paper) => (
+      <article className="publication" key={paper.title}>
+        <div className="publicationImage">
+          {paper.image ? (
+            <img src={paper.image} alt={paper.title} />
+          ) : (
+            <div className="publicationImageFallback">
+              <span>Figure</span>
+              <strong>coming soon</strong>
+            </div>
+          )}
+        </div>
+
+        <div className="publicationContent">
+          <div className="publicationMeta">
+            <span className="roleBadge">{paper.role}</span>
+            <span>{paper.status}</span>
+            <span>{paper.year}</span>
+          </div>
+
+          <h3>{paper.title}</h3>
+
+          <div className="publicationTags">
+            {paper.tags?.map((tag) => (
+              <span key={tag}>{tag}</span>
+            ))}
+          </div>
+
+          <p className="authors">{paper.authors}</p>
+          <p className="venue">{paper.venue}</p>
+          <p className="paperDescription">{paper.description}</p>
+
+          <div className="paperLinks">
+            {paper.links?.map((link) => (
+              <a href={link.url} key={link.label} target="_blank" rel="noreferrer">
+                {link.label} ↗
+              </a>
+            ))}
+          </div>
+        </div>
+      </article>
+    ))}
+    </div>
+
+  <p className="publicationNote">
+    <sup>*</sup> Corresponding author.
+  </p>
+</section>
+
+      <section id="photos" className="section">
+        <div className="sectionHeader">
+          <p>04</p>
+          <h2>Photos</h2>
+        </div>
+
+        <div className="photoGrid">
+          <div className="photoPlaceholder">Research</div>
+          <div className="photoPlaceholder">Campus</div>
+          <div className="photoPlaceholder">Life</div>
+          <div className="photoPlaceholder">Travel</div>
+        </div>
+      </section>
+
+      <section id="interests" className="section">
+  <div className="sectionHeader">
+    <p>05</p>
+    <h2>Interests</h2>
+  </div>
+
+  <div className="interestsIntro card">
+    <p>
+      Outside academia, I am a devoted fan of mystery and detective works, including
+      detective fiction, visual novels, galgames, and anime. I am especially drawn to
+      stories with intricate puzzles, unreliable narration, narrative tricks, and
+      carefully hidden truths.
+    </p>
+  </div>
+
+  <div className="interestGrid">
+    <article className="interestCard">
+      <div className="interestIcon">01</div>
+      <h3>Detective Fiction</h3>
+      <p>
+        I have read a wide range of detective novels. Some of my favorite writers
+        include Ellery Queen, Takekuni Kitayama, and Tomoyuki Shirai. I particularly
+        love Kitayama&apos;s <em>Danganronpa Kirigiri</em> series and his
+        <em> Castle</em> series, especially <em>The Murder at the Stone Ball Castle</em>.
+        I am also fond of Shirai&apos;s <em>Meitantei no Ikenie</em> and
+        <em> Elephant Head</em>. Works involving narrative tricks are among my
+        personal favorites.
+      </p>
+    </article>
+
+    <article className="interestCard">
+      <div className="interestIcon">02</div>
+      <h3>Visual Novels</h3>
+      <p>
+        I have also enjoyed many mystery-oriented visual novels. As my avatar may
+        suggest, my favorite is the <em>When They Cry</em> series, including
+        <em> Higurashi When They Cry</em> and <em>Umineko When They Cry</em>.
+        In addition, <em>Ever17</em> and <em>Remember11</em> from the Infinity series
+        are also among my favorites.
+      </p>
+    </article>
+
+    <article className="interestCard">
+      <div className="interestIcon">03</div>
+      <h3>Anime</h3>
+      <p>
+        I have watched countless mystery and suspense anime, far too many to list here.
+        In general, I enjoy works that combine atmosphere, psychological tension, and
+        well-structured mysteries.
+      </p>
+    </article>
+  </div>
+</section>
+
+
+      <footer className="footer">
+        <p>© 2026 Zhonghao Lin. Built with React, Vite, and GitHub Pages.</p>
+      </footer>
+    </main>
+  )
+}
+
+export default App
