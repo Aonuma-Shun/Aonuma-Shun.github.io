@@ -74,12 +74,12 @@ const quotes: QuoteEntry[] = [
   },
   {
     en: {
-      text: 'Do you still remember Archimedes’ principle?',
+      text: 'Do you remember Archimedes’ principle?',
       source: 'Ever17: The Out of Infinity',
     },
     link: moegirlUrl('Ever17'),
     zh: {
-      text: '你还记得阿基米德原理吗？',
+      text: '你知道阿基米德原理吗？',
       source: '时空轮回',
     },
   },
@@ -222,19 +222,8 @@ const quotes: QuoteEntry[] = [
     },
     link: moegirlUrl('CROSS†CHANNEL'),
     zh: {
-      text: '这里是群青广播部。还有人在那里吗？',
+      text: '这里是群青广播社，还有活着的人吗？',
       source: '交错频道',
-    },
-  },
-  {
-    en: {
-      text: 'This is the story of a girl whose heartbeat has stopped, and a boy whose breath is being taken away.',
-      source: 'Narcissu',
-    },
-    link: moegirlUrl('Narcissu'),
-    zh: {
-      text: '这是一位心跳静止的少女，和一位呼吸正被夺走的少年的故事。',
-      source: '水仙',
     },
   },
 ]
