@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react'
+import { useEffect, useState, type ReactNode } from 'react'
 import './App.css'
 
 type NewsItem = {
@@ -32,7 +32,223 @@ type Moment = {
   image: string
 }
 
+type QuoteEntry = {
+  en: {
+    source: string
+    text: string
+  }
+  link: string
+  zh: {
+    source: string
+    text: string
+  }
+}
+
 type Language = 'en' | 'zh'
+
+const moegirlUrl = (pageTitle: string) =>
+  `https://zh.moegirl.org.cn/${encodeURIComponent(pageTitle)}`
+
+const quotes: QuoteEntry[] = [
+  {
+    en: {
+      text: 'Without love, it cannot be seen.',
+      source: 'Umineko When They Cry',
+    },
+    link: moegirlUrl('海猫鸣泣之时'),
+    zh: {
+      text: '没有爱，就看不见。',
+      source: '海猫鸣泣之时',
+    },
+  },
+  {
+    en: {
+      text: 'Because of love, people see things that do not exist.',
+      source: 'Umineko When They Cry',
+    },
+    link: moegirlUrl('海猫鸣泣之时'),
+    zh: {
+      text: '因为有爱，人才会看见并不存在的东西。',
+      source: '海猫鸣泣之时',
+    },
+  },
+  {
+    en: {
+      text: 'Do you still remember Archimedes’ principle?',
+      source: 'Ever17: The Out of Infinity',
+    },
+    link: moegirlUrl('Ever17'),
+    zh: {
+      text: '你还记得阿基米德原理吗？',
+      source: '时空轮回',
+    },
+  },
+  {
+    en: {
+      text: 'Right now, I am in the place closest to heaven.',
+      source: 'Remember11: The Age of Infinity',
+    },
+    link: moegirlUrl('Remember11'),
+    zh: {
+      text: '我现在，身在离天国最近的地方。',
+      source: '无限轮回的时光',
+    },
+  },
+  {
+    en: {
+      text: 'If you simply surrender to fate, then everything ends there.',
+      source: 'Higurashi When They Cry',
+    },
+    link: moegirlUrl('寒蝉鸣泣之时'),
+    zh: {
+      text: '如果只是屈服于命运，那一切就结束了。',
+      source: '寒蝉鸣泣之时',
+    },
+  },
+  {
+    en: {
+      text: 'Deceive your original self. Deceive the world.',
+      source: 'Steins;Gate',
+    },
+    link: moegirlUrl('Steins;Gate'),
+    zh: {
+      text: '欺骗最初的自己，欺骗世界。',
+      source: '命运石之门',
+    },
+  },
+  {
+    en: {
+      text: 'If you want things to change, you must begin by changing yourself.',
+      source: 'Muv-Luv Alternative',
+    },
+    link: moegirlUrl('Muv-Luv Alternative'),
+    zh: {
+      text: '想让事情改变，就必须先从改变自己开始。',
+      source: 'Muv-Luv Alternative',
+    },
+  },
+  {
+    en: {
+      text: 'Live happily. That is all.',
+      source: 'Wonderful Everyday',
+    },
+    link: moegirlUrl('素晴日'),
+    zh: {
+      text: '幸福地活下去，仅此而已。',
+      source: '美好的每一天',
+    },
+  },
+  {
+    en: {
+      text: 'Could her fate also be rewritten?',
+      source: 'Rewrite',
+    },
+    link: moegirlUrl('Rewrite'),
+    zh: {
+      text: '她的命运，是否也有可能被改写？',
+      source: '罚抄',
+    },
+  },
+  {
+    en: {
+      text: 'This world has a secret.',
+      source: 'Little Busters!',
+    },
+    link: moegirlUrl('Little Busters!'),
+    zh: {
+      text: '这个世界有一个秘密。',
+      source: '小小克星',
+    },
+  },
+  {
+    en: {
+      text: 'Do not drown in memories. Happy days still lie ahead.',
+      source: 'CLANNAD',
+    },
+    link: moegirlUrl('CLANNAD'),
+    zh: {
+      text: '不要沉溺于回忆，幸福的时光还在前方。',
+      source: '团子大家族',
+    },
+  },
+  {
+    en: {
+      text: 'Magic exists to make others happy.',
+      source: 'AIR',
+    },
+    link: moegirlUrl('AIR'),
+    zh: {
+      text: '魔法是为了让别人幸福而存在的。',
+      source: '青空',
+    },
+  },
+  {
+    en: {
+      text: 'If you can be proud of your life, you should not wish to live it over.',
+      source: 'Fate/stay night',
+    },
+    link: moegirlUrl('Fate/stay night'),
+    zh: {
+      text: '若能为自己的人生感到骄傲，就不该渴望重来一次。',
+      source: '命运之夜',
+    },
+  },
+  {
+    en: {
+      text: 'You can bear them only because they are not your tragedy.',
+      source: 'The House in Fata Morgana',
+    },
+    link: moegirlUrl('The House in Fata Morgana'),
+    zh: {
+      text: '正因为是别人的悲剧，所以才能承受。',
+      source: '海市蜃楼之馆',
+    },
+  },
+  {
+    en: {
+      text: 'This is not a story about heroes.',
+      source: 'Full Metal Daemon Muramasa',
+    },
+    link: moegirlUrl('装甲恶鬼村正'),
+    zh: {
+      text: '这不是英雄的故事。',
+      source: '装甲恶鬼村正',
+    },
+  },
+  {
+    en: {
+      text: 'This is the Ultramarine Broadcast Club. Is anyone still out there?',
+      source: 'CROSS†CHANNEL',
+    },
+    link: moegirlUrl('CROSS†CHANNEL'),
+    zh: {
+      text: '这里是群青广播部。还有人在那里吗？',
+      source: '交错频道',
+    },
+  },
+  {
+    en: {
+      text: 'This is the story of a girl whose heartbeat has stopped, and a boy whose breath is being taken away.',
+      source: 'Narcissu',
+    },
+    link: moegirlUrl('Narcissu'),
+    zh: {
+      text: '这是一位心跳静止的少女，和一位呼吸正被夺走的少年的故事。',
+      source: '水仙',
+    },
+  },
+  {
+    en: {
+      text: 'Magic exists to bring people happiness, right?',
+      source: 'Witch on the Holy Night',
+    },
+    link: moegirlUrl('魔法使之夜'),
+    zh: {
+      text: '魔法是为了给人带来幸福而存在的，对吧？',
+      source: '魔法使之夜',
+    },
+  },
+]
 
 const news: NewsItem[] = [
   {
@@ -373,7 +589,7 @@ const pavelDinner: Moment = {
 const pavelSeminar: Moment = {
   title: 'Seminar with Prof. Pavel',
   category: 'Seminar',
-  description: 'A research discussion during Prof. Pavel\'s visit.',
+  description: 'An academic discussion between Prof. Pavel and senior Kui Zhu during the seminar.',
   image: '/images/moments/pavel/pavel-seminar.jpg',
 }
 
@@ -424,9 +640,9 @@ const groupMoments: Moment[] = [
     image: '/images/moments/Group/Group-2024.jpg',
   },
   {
-    title: 'Graduation Season 2025',
+    title: 'Advisor Prof. Xianlin Zeng with 2025 Graduates',
     category: 'Research Group',
-    description: 'Group photo with graduating students in 2025.',
+    description: 'Prof. Xianlin Zeng with graduating students in 2025.',
     image: '/images/moments/Group/Group-grad-2025.jpg',
   },
   {
@@ -436,9 +652,9 @@ const groupMoments: Moment[] = [
     image: '/images/moments/Group/Group-2025.jpg',
   },
   {
-    title: 'Graduation Season 2026',
+    title: 'Advisor Prof. Xianlin Zeng with 2026 Graduates',
     category: 'Research Group',
-    description: 'Group photo with graduating students in 2026.',
+    description: 'Prof. Xianlin Zeng with graduating students in 2026.',
     image: '/images/moments/Group/Group-grad-2026.jpg',
   },
 ]
@@ -447,14 +663,14 @@ const pavelDinnerZh: Moment = {
   ...pavelDinner,
   title: '与 Pavel 教授共进晚餐',
   category: '课题组生活',
-  description: '报告结束后，与导师曾宪琳教授、Pavel 教授和师姐侯洁一起共进晚餐。',
+  description: '报告结束后，与导师曾宪琳教授、Pavel 教授和侯洁师姐一起共进晚餐。',
 }
 
 const pavelSeminarZh: Moment = {
   ...pavelSeminar,
   title: 'Pavel 教授学术报告',
   category: '学术报告',
-  description: 'Pavel 教授来访期间的学术交流现场。',
+  description: 'Pavel 教授与朱奎师兄在报告期间进行学术交流。',
 }
 
 const pavelVisitsZh: Moment[] = pavelVisits.map((moment, index) => ({
@@ -473,9 +689,9 @@ const groupMomentsZh: Moment[] = [
   },
   {
     ...groupMoments[1],
-    title: '2025 届毕业合影',
+    title: '导师曾宪琳教授与 2025 届毕业生合影',
     category: '课题组合影',
-    description: '与 2025 届毕业生一起留下的课题组合影。',
+    description: '曾宪琳教授与 2025 届毕业生一起留下的课题组合影。',
   },
   {
     ...groupMoments[2],
@@ -485,13 +701,14 @@ const groupMomentsZh: Moment[] = [
   },
   {
     ...groupMoments[3],
-    title: '2026 届毕业合影',
+    title: '导师曾宪琳教授与 2026 届毕业生合影',
     category: '课题组合影',
-    description: '与 2026 届毕业生一起留下的课题组合影。',
+    description: '曾宪琳教授与 2026 届毕业生一起留下的课题组合影。',
   },
 ]
 
 type ActionIconName = 'mail' | 'github' | 'download' | 'switch'
+type NavIconName = 'news' | 'publications' | 'moments' | 'interests'
 
 function ActionIcon({ name }: { name: ActionIconName }) {
   if (name === 'github') {
@@ -547,9 +764,64 @@ function ActionIcon({ name }: { name: ActionIconName }) {
   )
 }
 
+function NavIcon({ name }: { name: NavIconName }) {
+  const iconPaths = {
+    news: (
+      <>
+        <path d="M5 5.5h11.5a2.5 2.5 0 0 1 2.5 2.5v10.5H7.5A2.5 2.5 0 0 1 5 16z" />
+        <path d="M8 8.5h7" />
+        <path d="M8 11.5h8" />
+        <path d="M8 14.5h5" />
+      </>
+    ),
+    publications: (
+      <>
+        <path d="M5 5.5A2.5 2.5 0 0 1 7.5 3H19v16H7.5A2.5 2.5 0 0 0 5 21.5z" />
+        <path d="M5 5.5v16" />
+        <path d="M9 7h6" />
+        <path d="M9 10h5" />
+      </>
+    ),
+    moments: (
+      <>
+        <rect x="4" y="5" width="16" height="14" rx="2.5" />
+        <path d="m7 16 3.5-4 3 3 2-2.5L18 16" />
+        <path d="M8.5 9.2h.01" />
+      </>
+    ),
+    interests: (
+      <>
+        <path d="M12 4.5 13.6 9l4.4 1.6-4.4 1.6L12 16.7l-1.6-4.5L6 10.6 10.4 9z" />
+        <path d="M18 4v3" />
+        <path d="M16.5 5.5h3" />
+        <path d="M6 17v2.5" />
+        <path d="M4.8 18.2h2.4" />
+      </>
+    ),
+  } satisfies Record<NavIconName, ReactNode>
+
+  return (
+    <svg
+      className="navIcon"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
+      aria-hidden="true"
+    >
+      {iconPaths[name]}
+    </svg>
+  )
+}
+
 function App() {
   const [language, setLanguage] = useState<Language>('en')
   const [showRealPhoto, setShowRealPhoto] = useState(false)
+  const [quoteIndex, setQuoteIndex] = useState(0)
+  const [isQuoteExpanded, setIsQuoteExpanded] = useState(false)
+  const [isQuoteHidden, setIsQuoteHidden] = useState(false)
   const [selectedNewsImage, setSelectedNewsImage] = useState<{
     alt: string
     src: string
@@ -573,6 +845,8 @@ function App() {
       : 'Switch to profile photo'
   const viewLabel = isChinese ? '查看' : 'View'
   const closeLabel = isChinese ? '关闭' : 'Close'
+  const currentQuote = quotes[quoteIndex % quotes.length]
+  const currentQuoteContent = isChinese ? currentQuote.zh : currentQuote.en
   const visibleNews = isChinese ? newsZh : news
   const visiblePublicationGroups = groupPublications(isChinese ? publicationsZh : publications)
   const visiblePavelDinner = isChinese ? pavelDinnerZh : pavelDinner
@@ -580,16 +854,24 @@ function App() {
   const visiblePavelVisits = isChinese ? pavelVisitsZh : pavelVisits
   const visibleGroupMoments = isChinese ? groupMomentsZh : groupMoments
   const copy = {
-    brand: isChinese ? '欢迎来到林仲豪的主页' : 'Welcome to Zhonghao\'s Homepage',
+    brand: isChinese ? '欢迎来到林仲豪的主页 (^_^)' : 'Welcome to Zhonghao\'s Homepage (^_^)',
     languageToggle: isChinese ? 'EN' : '中文',
     languageToggleSub: isChinese ? 'Switch' : '切换',
     switchLanguageLabel: isChinese ? 'Switch to English' : '切换到中文版本',
     nav: isChinese
-      ? ['新闻', '论文', '生活片段', '兴趣']
+      ? ['新闻', '论文', '片段', '兴趣']
       : ['News', 'Publications', 'Moments', 'Interests'],
     siteNote: isChinese
-      ? '本站仍在建设中。更多关于研究、论文、项目和个人兴趣的内容会陆续更新。'
-      : 'This website is still under construction. More details about my research, publications, projects, and personal interests will be added soon.',
+      ? '本站仍在建设中，上一次更新于 2026 年 7 月 1 日。'
+      : 'This website is still under construction. Last updated on July 1, 2026.',
+    quoteKicker: isChinese ? '随机语录' : 'Rotating Quote',
+    quoteTitle: isChinese ? '视觉小说片段' : 'Fragments in Visual Novels',
+    quoteHint: isChinese ? '点击展开出处' : 'Click to expand source',
+    quoteLinkLabel: isChinese ? '在萌娘百科查看作品' : 'View on Moegirlpedia',
+    quoteCollapseLabel: isChinese ? '收起语录栏' : 'Hide quote dock',
+    quoteRestoreLabel: isChinese ? '展开语录栏' : 'Show quote dock',
+    previousQuoteLabel: isChinese ? '上一句' : 'Previous quote',
+    nextQuoteLabel: isChinese ? '下一句' : 'Next quote',
     eyebrow: isChinese
       ? '控制工程硕士生 · 北京理工大学'
       : 'M.Eng. Student · Control Engineering · Beijing Institute of Technology',
@@ -627,6 +909,25 @@ function App() {
     setLanguage((current) => (current === 'en' ? 'zh' : 'en'))
   }
 
+  const showPreviousQuote = () => {
+    setQuoteIndex((current) => (current === 0 ? quotes.length - 1 : current - 1))
+    setIsQuoteExpanded(false)
+  }
+
+  const showNextQuote = () => {
+    setQuoteIndex((current) => (current + 1) % quotes.length)
+    setIsQuoteExpanded(false)
+  }
+
+  useEffect(() => {
+    const intervalId = window.setInterval(() => {
+      setQuoteIndex((current) => (current + 1) % quotes.length)
+      setIsQuoteExpanded(false)
+    }, 15000)
+
+    return () => window.clearInterval(intervalId)
+  }, [])
+
   return (
     <main className="page">
       <header className="hero">
@@ -635,10 +936,22 @@ function App() {
 
           <div className="navActions">
             <div className="navLinks">
-              <a href="#news">{copy.nav[0]}</a>
-              <a href="#publications">{copy.nav[1]}</a>
-              <a href="#moments">{copy.nav[2]}</a>
-              <a href="#interests">{copy.nav[3]}</a>
+              <a href="#news">
+                <NavIcon name="news" />
+                {copy.nav[0]}
+              </a>
+              <a href="#publications">
+                <NavIcon name="publications" />
+                {copy.nav[1]}
+              </a>
+              <a href="#moments">
+                <NavIcon name="moments" />
+                {copy.nav[2]}
+              </a>
+              <a href="#interests">
+                <NavIcon name="interests" />
+                {copy.nav[3]}
+              </a>
             </div>
 
             <button
@@ -765,7 +1078,20 @@ function App() {
       <article className="publication" key={paper.title}>
         <div className="publicationImage">
           {paper.image ? (
-            <img src={paper.image} alt={paper.title} />
+            <button
+              className="publicationImageButton"
+              type="button"
+              onClick={() =>
+                setSelectedNewsImage({
+                  alt: paper.title,
+                  src: paper.image ?? '',
+                })
+              }
+              aria-label={`View full image for ${paper.title}`}
+            >
+              <img src={paper.image} alt={paper.title} />
+              <span>{viewLabel}</span>
+            </button>
           ) : (
             <div className="publicationImageFallback">
               <span>{copy.publicationFallback[0]}</span>
@@ -810,7 +1136,9 @@ function App() {
     </div>
 
   <p className="publicationNote">
-    <sup>*</sup> {copy.publicationNote}
+    <strong>
+      <sup>*</sup> {copy.publicationNote}
+    </strong>
   </p>
 </section>
 
@@ -930,105 +1258,261 @@ function App() {
         </div>
 
         {isChinese ? (
-          <>
-            <div className="interestsIntro card">
+          <div className="interestShowcase">
+            <div className="interestsIntro">
+              <span>Mystery-Oriented</span>
               <p>
-                学术之外，我是一个重度悬疑推理爱好者。推理小说、悬疑视觉小说、
-                galgame与动画都是我长期关注的类型；我尤其喜欢精巧谜题、叙述性诡计
-                和层层反转之后仍能自洽的真相。
+                学术之外，我是一个重度悬疑推理爱好者。推理小说、悬疑视觉小说和动画都是我长期关注的类型；我尤其喜欢精巧谜题、叙述性诡计，以及层层反转后仍能自洽的真相。
               </p>
             </div>
 
             <div className="interestGrid">
               <article className="interestCard">
-                <div className="interestIcon">01</div>
-                <h3>推理小说</h3>
-                <p>
-                  我阅读过大量推理小说，喜欢的作家包括<em>埃勒里·奎因</em>、
-                  <em>北山猛邦</em>和<em>白井智之</em>。其中尤其喜欢北山猛邦的
-                  <em>弹丸论破：雾切</em>系列和“杀人城”系列，特别是
-                  <em>《石球城杀人事件》</em>；白井智之的<em>《名侦探的献祭》</em>
-                  与<em>《Elephant Head》</em>也很合我的口味。带有叙述性诡计的作品
-                  对我来说总有额外的吸引力。
-                </p>
+                <button
+                  className="interestImageButton interestImageTall"
+                  type="button"
+                  onClick={() =>
+                    setSelectedNewsImage({
+                      alt: 'Elephant Head',
+                      src: '/images/Interests/Elephant-head.jpg',
+                    })
+                  }
+                >
+                  <img src="/images/Interests/Elephant-head.jpg" alt="Elephant Head" />
+                </button>
+                <div className="interestContent">
+                  <div className="interestIcon">01</div>
+                  <h3>推理小说</h3>
+                  <p>
+                    我阅读过大量推理小说，喜欢的作家包括<em>埃勒里·奎因</em>、
+                    <em>北山猛邦</em>和<em>白井智之</em>。其中尤其喜欢北山猛邦的
+                    <em>弹丸论破：雾切</em>系列和“杀人城”系列，特别是
+                    <em>《石球城杀人事件》</em>；白井智之的<em>《名侦探的献祭》</em>与
+                    <em>《Elephant Head》</em>也很合我的口味。
+                  </p>
+                </div>
+              </article>
+
+              <article className="interestCard interestCardWide">
+                <button
+                  className="interestImageButton interestImageWide"
+                  type="button"
+                  onClick={() =>
+                    setSelectedNewsImage({
+                      alt: '贝伦卡斯泰露与古手梨花',
+                      src: '/images/Interests/e80b6a9837e0e6a5eaed5760085569cc.jpg',
+                    })
+                  }
+                >
+                  <img
+                    src="/images/Interests/e80b6a9837e0e6a5eaed5760085569cc.jpg"
+                    alt="贝伦卡斯泰露与古手梨花"
+                  />
+                  <span>Bernkastel / Rika</span>
+                </button>
+                <div className="interestContent">
+                  <div className="interestIcon">02</div>
+                  <h3>视觉小说</h3>
+                  <p>
+                    我也看过许多悬疑推理向视觉小说。最喜欢的是 <em>When They Cry</em>{' '}
+                    系列，包括<em>寒蝉鸣泣之时</em>与<em>海猫鸣泣之时</em>；
+                    <em>逆转裁判</em>和<em>逆转检事</em>系列也很喜欢。此外，Infinity 系列中的{' '}
+                    <em>Ever 17</em> 和 <em>Remember 11</em>{' '}
+                    也是我的心头好。从我的头像可推断出，最喜欢的角色是<em>古手梨花</em>和<em>贝伦卡斯泰露</em>。
+                  </p>
+                </div>
               </article>
 
               <article className="interestCard">
-                <div className="interestIcon">02</div>
-                <h3>视觉小说</h3>
-                <p>
-                  我也看过许多悬疑推理向视觉小说。正如头像暗示的那样，最喜欢的是
-                  <em>When They Cry</em> 系列，包括<em>寒蝉鸣泣之时</em>与
-                  <em>海猫鸣泣之时</em>。此外，Infinity系列中的<em>Ever17</em>和
-                  <em>Remember11</em>也是我很喜欢的作品。
-                </p>
-              </article>
-
-              <article className="interestCard">
-                <div className="interestIcon">03</div>
-                <h3>动画</h3>
-                <p>
-                  悬疑类动画看过很多，这里不一一列举。总体来说，我偏爱那些兼具氛围、
-                  心理张力和扎实谜题结构的作品。
-                </p>
+                <button
+                  className="interestImageButton interestImageTall"
+                  type="button"
+                  onClick={() =>
+                    setSelectedNewsImage({
+                      alt: '来自新世界',
+                      src: '/images/Interests/New-world.jpg',
+                    })
+                  }
+                >
+                  <img src="/images/Interests/New-world.jpg" alt="来自新世界" />
+                </button>
+                <div className="interestContent">
+                  <div className="interestIcon">03</div>
+                  <h3>动画</h3>
+                  <p>
+                    悬疑类动画看过很多，这里不一一列举。总体来说，我偏爱那些兼具氛围、心理张力和扎实谜题结构的作品。<em>《来自新世界》</em>是其中非常喜欢的一部。从我的 ID 不难推断出，最喜欢的角色是<em>青沼瞬</em>。
+                  </p>
+                </div>
               </article>
             </div>
-          </>
+          </div>
         ) : (
-          <>
-            <div className="interestsIntro card">
+          <div className="interestShowcase">
+            <div className="interestsIntro">
+              <span>Mystery-Oriented</span>
               <p>
                 Outside academia, I am a devoted fan of mystery and detective works,
-                including detective fiction, visual novels, galgames, and anime. I am
-                especially drawn to stories with intricate puzzles, unreliable narration,
-                narrative tricks, and carefully hidden truths.
+                especially detective fiction, mystery-oriented visual novels, and anime. I
+                am drawn to intricate puzzles, unreliable narration, narrative tricks, and
+                truths that still hold together after several reversals.
               </p>
             </div>
 
             <div className="interestGrid">
               <article className="interestCard">
-                <div className="interestIcon">01</div>
-                <h3>Detective Fiction</h3>
-                <p>
-                  I have read a wide range of detective novels. Some of my favorite
-                  writers include Ellery Queen, Takekuni Kitayama, and Tomoyuki Shirai. I
-                  particularly love Kitayama&apos;s <em>Danganronpa Kirigiri</em> series
-                  and his <em>Castle</em> series, especially{' '}
-                  <em>The Murder at the Stone Ball Castle</em>. I am also fond of
-                  Shirai&apos;s <em>Meitantei no Ikenie</em> and <em>Elephant Head</em>.
-                  Works involving narrative tricks are among my personal favorites.
-                </p>
+                <button
+                  className="interestImageButton interestImageTall"
+                  type="button"
+                  onClick={() =>
+                    setSelectedNewsImage({
+                      alt: 'Elephant Head',
+                      src: '/images/Interests/Elephant-head.jpg',
+                    })
+                  }
+                >
+                  <img src="/images/Interests/Elephant-head.jpg" alt="Elephant Head" />
+                </button>
+                <div className="interestContent">
+                  <div className="interestIcon">01</div>
+                  <h3>Detective Fiction</h3>
+                  <p>
+                    I have read a wide range of detective novels. Some of my favorite writers
+                    include <em>Ellery Queen</em>, <em>Takekuni Kitayama</em>, and{' '}
+                    <em>Tomoyuki Shirai</em>. I particularly love Kitayama&apos;s{' '}
+                    <em>Danganronpa Kirigiri</em> series and his <em>Castle</em> series,
+                    especially <em>The Murder at the Stone Ball Castle</em>. I am also fond of
+                    Shirai&apos;s <em>Meitantei no Ikenie</em> and <em>Elephant Head</em>.
+                  </p>
+                </div>
+              </article>
+
+              <article className="interestCard interestCardWide">
+                <button
+                  className="interestImageButton interestImageWide"
+                  type="button"
+                  onClick={() =>
+                    setSelectedNewsImage({
+                      alt: 'Bernkastel and Rika Furude',
+                      src: '/images/Interests/e80b6a9837e0e6a5eaed5760085569cc.jpg',
+                    })
+                  }
+                >
+                  <img
+                    src="/images/Interests/e80b6a9837e0e6a5eaed5760085569cc.jpg"
+                    alt="Bernkastel and Rika Furude"
+                  />
+                  <span>Bernkastel / Rika</span>
+                </button>
+                <div className="interestContent">
+                  <div className="interestIcon">02</div>
+                  <h3>Visual Novels</h3>
+                  <p>
+                    I have also enjoyed many mystery-oriented visual novels. My favorite is the{' '}
+                    <em>When They Cry</em> series, including{' '}
+                    <em>Higurashi When They Cry</em> and <em>Umineko When They Cry</em>. I also
+                    enjoy the <em>Ace Attorney</em> and{' '}
+                    <em>Ace Attorney Investigations</em> series. In addition, <em>Ever 17</em>{' '}
+                    and <em>Remember 11</em> from the Infinity series are among my favorites.
+                    My favorite characters are <em>Rika Furude</em> and <em>Bernkastel</em>.
+                  </p>
+                </div>
               </article>
 
               <article className="interestCard">
-                <div className="interestIcon">02</div>
-                <h3>Visual Novels</h3>
-                <p>
-                  I have also enjoyed many mystery-oriented visual novels. As my avatar
-                  may suggest, my favorite is the <em>When They Cry</em> series, including{' '}
-                  <em>Higurashi When They Cry</em> and <em>Umineko When They Cry</em>. In
-                  addition, <em>Ever17</em> and <em>Remember11</em> from the Infinity
-                  series are also among my favorites.
-                </p>
-              </article>
-
-              <article className="interestCard">
-                <div className="interestIcon">03</div>
-                <h3>Anime</h3>
-                <p>
-                  I have watched countless mystery and suspense anime, far too many to
-                  list here. In general, I enjoy works that combine atmosphere,
-                  psychological tension, and well-structured mysteries.
-                </p>
+                <button
+                  className="interestImageButton interestImageTall"
+                  type="button"
+                  onClick={() =>
+                    setSelectedNewsImage({
+                      alt: 'From the New World',
+                      src: '/images/Interests/New-world.jpg',
+                    })
+                  }
+                >
+                  <img src="/images/Interests/New-world.jpg" alt="From the New World" />
+                </button>
+                <div className="interestContent">
+                  <div className="interestIcon">03</div>
+                  <h3>Anime</h3>
+                  <p>
+                    I have watched countless mystery and suspense anime, far too many to
+                    list here. In general, I enjoy works that combine atmosphere,
+                    psychological tension, and well-structured mysteries.{' '}
+                    <em>From the New World</em> is one of my favorites, and my favorite character is{' '}
+                    <em>Shun Aonuma</em>, as my ID quietly suggests.
+                  </p>
+                </div>
               </article>
             </div>
-          </>
+          </div>
         )}
       </section>
 
       <footer className="footer">
         <p>{copy.footer}</p>
       </footer>
+
+      {isQuoteHidden ? (
+        <button
+          className="quoteRestore"
+          type="button"
+          onClick={() => setIsQuoteHidden(false)}
+          aria-label={copy.quoteRestoreLabel}
+        >
+          {copy.quoteTitle}
+        </button>
+      ) : (
+        <section className="quotePanel quoteDock" aria-label={copy.quoteTitle}>
+          <button
+            className="quoteHide"
+            type="button"
+            onClick={() => {
+              setIsQuoteExpanded(false)
+              setIsQuoteHidden(true)
+            }}
+            aria-label={copy.quoteCollapseLabel}
+          >
+            ×
+          </button>
+
+          <div className="quoteMain">
+            <button type="button" onClick={showPreviousQuote} aria-label={copy.previousQuoteLabel}>
+              ←
+            </button>
+
+            <button
+              className="quoteBody"
+              type="button"
+              onClick={() => setIsQuoteExpanded((current) => !current)}
+              aria-expanded={isQuoteExpanded}
+            >
+              <blockquote>
+                {isChinese ? `「${currentQuoteContent.text}」` : `“${currentQuoteContent.text}”`}
+              </blockquote>
+              <cite>{isChinese ? `《${currentQuoteContent.source}》` : currentQuoteContent.source}</cite>
+            </button>
+
+            <button type="button" onClick={showNextQuote} aria-label={copy.nextQuoteLabel}>
+              →
+            </button>
+          </div>
+
+          {isQuoteExpanded ? (
+            <div className="quoteDetails">
+              <a
+                href={currentQuote.link}
+                target="_blank"
+                rel="noreferrer"
+                onClick={(event) => event.stopPropagation()}
+              >
+                {isChinese
+                  ? `${copy.quoteLinkLabel}：《${currentQuoteContent.source}》↗`
+                  : `${copy.quoteLinkLabel}: ${currentQuoteContent.source} ↗`}
+              </a>
+            </div>
+          ) : null}
+        </section>
+      )}
 
       {selectedNewsImage ? (
         <div
