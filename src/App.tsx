@@ -934,7 +934,7 @@ function App() {
             <div className="interestsIntro card">
               <p>
                 学术之外，我是一个重度悬疑推理爱好者。推理小说、悬疑视觉小说、
-                galgame 与动画都是我长期关注的类型；我尤其喜欢精巧谜题、叙述性诡计
+                galgame与动画都是我长期关注的类型；我尤其喜欢精巧谜题、叙述性诡计
                 和层层反转之后仍能自洽的真相。
               </p>
             </div>
@@ -959,7 +959,7 @@ function App() {
                 <p>
                   我也看过许多悬疑推理向视觉小说。正如头像暗示的那样，最喜欢的是
                   <em>When They Cry</em> 系列，包括<em>寒蝉鸣泣之时</em>与
-                  <em>海猫鸣泣之时</em>。此外，Infinity 系列中的<em>Ever17</em>和
+                  <em>海猫鸣泣之时</em>。此外，Infinity系列中的<em>Ever17</em>和
                   <em>Remember11</em>也是我很喜欢的作品。
                 </p>
               </article>
