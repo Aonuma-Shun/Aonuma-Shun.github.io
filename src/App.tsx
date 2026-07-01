@@ -975,6 +975,8 @@ function App() {
     className="avatar"
     src={avatarSrc}
     alt={avatarAlt}
+    decoding="async"
+    loading="eager"
     title={avatarButtonText}
     onClick={toggleAvatar}
   />
@@ -1053,7 +1055,12 @@ function App() {
                   }
                   aria-label={`View image for ${item.title}`}
                 >
-                  <img src={item.image} alt={item.imageAlt ?? item.title} />
+                  <img
+                    src={item.image}
+                    alt={item.imageAlt ?? item.title}
+                    decoding="async"
+                    loading="lazy"
+                  />
                   <span>{viewLabel}</span>
                 </button>
               ) : null}
@@ -1089,7 +1096,7 @@ function App() {
               }
               aria-label={`View full image for ${paper.title}`}
             >
-              <img src={paper.image} alt={paper.title} />
+              <img src={paper.image} alt={paper.title} decoding="async" loading="lazy" />
               <span>{viewLabel}</span>
             </button>
           ) : (
@@ -1167,7 +1174,12 @@ function App() {
                 })
               }
             >
-              <img src={visiblePavelSeminar.image} alt={visiblePavelSeminar.title} />
+              <img
+                src={visiblePavelSeminar.image}
+                alt={visiblePavelSeminar.title}
+                decoding="async"
+                loading="lazy"
+              />
               <div className="momentOverlay">
                 <span>{visiblePavelSeminar.category}</span>
                 <h3>{visiblePavelSeminar.title}</h3>
@@ -1185,7 +1197,12 @@ function App() {
                 })
               }
             >
-              <img src={visiblePavelDinner.image} alt={visiblePavelDinner.title} />
+              <img
+                src={visiblePavelDinner.image}
+                alt={visiblePavelDinner.title}
+                decoding="async"
+                loading="lazy"
+              />
               <div className="momentOverlay">
                 <span>{visiblePavelDinner.category}</span>
                 <h3>{visiblePavelDinner.title}</h3>
@@ -1212,7 +1229,7 @@ function App() {
                     })
                   }
                 >
-                  <img src={moment.image} alt={moment.title} />
+                  <img src={moment.image} alt={moment.title} decoding="async" loading="lazy" />
                   <span>{viewLabel}</span>
                 </button>
               ))}
@@ -1239,7 +1256,7 @@ function App() {
                   })
                 }
               >
-                <img src={moment.image} alt={moment.title} />
+                <img src={moment.image} alt={moment.title} decoding="async" loading="lazy" />
                 <div className="momentOverlay">
                   <span>{moment.category}</span>
                   <h3>{moment.title}</h3>
@@ -1278,7 +1295,12 @@ function App() {
                     })
                   }
                 >
-                  <img src="/images/Interests/Elephant-head.jpg" alt="Elephant Head" />
+                  <img
+                    src="/images/Interests/Elephant-head.jpg"
+                    alt="Elephant Head"
+                    decoding="async"
+                    loading="lazy"
+                  />
                 </button>
                 <div className="interestContent">
                   <div className="interestIcon">01</div>
@@ -1307,6 +1329,8 @@ function App() {
                   <img
                     src="/images/Interests/e80b6a9837e0e6a5eaed5760085569cc.jpg"
                     alt="贝伦卡斯泰露与古手梨花"
+                    decoding="async"
+                    loading="lazy"
                   />
                   <span>Bernkastel / Rika</span>
                 </button>
@@ -1334,7 +1358,12 @@ function App() {
                     })
                   }
                 >
-                  <img src="/images/Interests/New-world.jpg" alt="来自新世界" />
+                  <img
+                    src="/images/Interests/New-world.jpg"
+                    alt="来自新世界"
+                    decoding="async"
+                    loading="lazy"
+                  />
                 </button>
                 <div className="interestContent">
                   <div className="interestIcon">03</div>
@@ -1370,7 +1399,12 @@ function App() {
                     })
                   }
                 >
-                  <img src="/images/Interests/Elephant-head.jpg" alt="Elephant Head" />
+                  <img
+                    src="/images/Interests/Elephant-head.jpg"
+                    alt="Elephant Head"
+                    decoding="async"
+                    loading="lazy"
+                  />
                 </button>
                 <div className="interestContent">
                   <div className="interestIcon">01</div>
@@ -1400,6 +1434,8 @@ function App() {
                   <img
                     src="/images/Interests/e80b6a9837e0e6a5eaed5760085569cc.jpg"
                     alt="Bernkastel and Rika Furude"
+                    decoding="async"
+                    loading="lazy"
                   />
                   <span>Bernkastel / Rika</span>
                 </button>
@@ -1429,7 +1465,12 @@ function App() {
                     })
                   }
                 >
-                  <img src="/images/Interests/New-world.jpg" alt="From the New World" />
+                  <img
+                    src="/images/Interests/New-world.jpg"
+                    alt="From the New World"
+                    decoding="async"
+                    loading="lazy"
+                  />
                 </button>
                 <div className="interestContent">
                   <div className="interestIcon">03</div>
@@ -1530,7 +1571,7 @@ function App() {
             >
               {closeLabel}
             </button>
-            <img src={selectedNewsImage.src} alt={selectedNewsImage.alt} />
+            <img src={selectedNewsImage.src} alt={selectedNewsImage.alt} decoding="async" />
           </div>
         </div>
       ) : null}
