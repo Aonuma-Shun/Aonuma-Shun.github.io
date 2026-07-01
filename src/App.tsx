@@ -237,17 +237,6 @@ const quotes: QuoteEntry[] = [
       source: '水仙',
     },
   },
-  {
-    en: {
-      text: 'Magic exists to bring people happiness, right?',
-      source: 'Witch on the Holy Night',
-    },
-    link: moegirlUrl('魔法使之夜'),
-    zh: {
-      text: '魔法是为了给人带来幸福而存在的，对吧？',
-      source: '魔法使之夜',
-    },
-  },
 ]
 
 const news: NewsItem[] = [
@@ -1279,7 +1268,7 @@ function App() {
             <div className="interestsIntro">
               <span>Mystery-Oriented</span>
               <p>
-                学术之外，我是一个重度悬疑推理爱好者。推理小说、悬疑视觉小说和动画都是我长期关注的类型；我尤其喜欢精巧谜题、叙述性诡计，以及层层反转后仍能自洽的真相。
+                学术之外，我是一个重度悬疑推理爱好者。我阅读过大量推理小说、悬疑视觉小说，也看过很多悬疑动画；我尤其喜欢精巧谜题、叙述性诡计，以及层层反转后仍能自洽的真相。
               </p>
             </div>
 
