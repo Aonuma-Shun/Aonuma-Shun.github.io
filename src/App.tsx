@@ -49,6 +49,9 @@ type Language = 'en' | 'zh'
 const moegirlUrl = (pageTitle: string) =>
   `https://zh.moegirl.org.cn/${encodeURIComponent(pageTitle)}`
 
+const thumbnailSrc = (src: string) =>
+  src.replace('/images/originals/', '/images/thumbs/').replace(/\.(jpe?g|png)$/i, '.jpg')
+
 const quotes: QuoteEntry[] = [
   {
     en: {
@@ -118,12 +121,12 @@ const quotes: QuoteEntry[] = [
   },
   {
     en: {
-      text: 'If you want things to change, you must begin by changing yourself.',
+      text: "Don't underestimate humanity!!",
       source: 'Muv-Luv Alternative',
     },
     link: moegirlUrl('Muv-Luv Alternative'),
     zh: {
-      text: '想让事情改变，就必须先从改变自己开始。',
+      text: '别小看人类了啊啊啊啊！！',
       source: 'Muv-Luv Alternative',
     },
   },
@@ -151,12 +154,12 @@ const quotes: QuoteEntry[] = [
   },
   {
     en: {
-      text: 'This world has a secret.',
+      text: 'Do you know the secret of the world?',
       source: 'Little Busters!',
     },
     link: moegirlUrl('Little Busters!'),
     zh: {
-      text: '这个世界有一个秘密。',
+      text: '你知道世界的秘密吗？',
       source: '小小克星',
     },
   },
@@ -173,23 +176,23 @@ const quotes: QuoteEntry[] = [
   },
   {
     en: {
-      text: 'Magic exists to make others happy.',
+      text: 'Summer continues to where as well, she is waiting in the air.',
       source: 'AIR',
     },
     link: moegirlUrl('AIR'),
     zh: {
-      text: '魔法是为了让别人幸福而存在的。',
+      text: '夏日仍在某处延续，她正在天空中等待。',
       source: '青空',
     },
   },
   {
     en: {
-      text: 'If you can be proud of your life, you should not wish to live it over.',
+      text: 'This is a story of carrying one’s convictions through.',
       source: 'Fate/stay night',
     },
     link: moegirlUrl('Fate/stay night'),
     zh: {
-      text: '若能为自己的人生感到骄傲，就不该渴望重来一次。',
+      text: '此为，贯彻信念的故事。',
       source: '命运之夜',
     },
   },
@@ -222,8 +225,8 @@ const quotes: QuoteEntry[] = [
     },
     link: moegirlUrl('CROSS†CHANNEL'),
     zh: {
-      text: '这里是群青广播社，还有活着的人吗？',
-      source: '交错频道',
+      text: '这里是群青广播社，还有人在那吗？',
+      source: '交错†频道',
     },
   },
 ]
@@ -238,7 +241,7 @@ const news: NewsItem[] = [
         <strong className="journalName">IEEE Transactions on Signal Processing</strong>.
       </>
     ),
-    image: '/images/news/TSP-2026.png',
+    image: '/images/originals/news/TSP-2026.png',
     imageAlt: 'Overview figure for the IEEE TSP paper',
   },
   {
@@ -251,7 +254,7 @@ const news: NewsItem[] = [
         <em>Universal Gradient Descent Ascent Method for Smooth Minimax Optimization</em>.
       </>
     ),
-    image: '/images/news/So-2026.jpg',
+    image: '/images/originals/news/So-2026.jpg',
     imageAlt: 'Seminar poster for Prof. Anthony So',
   },
   {
@@ -263,7 +266,7 @@ const news: NewsItem[] = [
         <strong className="journalName">Journal of Systems Science and Complexity</strong>.
       </>
     ),
-    image: '/images/news/JSSC-2026.png',
+    image: '/images/originals/news/JSSC-2026.png',
     imageAlt: 'Figure from the JSSC paper',
   },
   {
@@ -276,7 +279,7 @@ const news: NewsItem[] = [
         <em>On System Theory for Learning in Games</em>.
       </>
     ),
-    image: '/images/news/Pavel-2025.jpg',
+    image: '/images/originals/news/Pavel-2025.jpg',
     imageAlt: 'Seminar poster for Prof. Lacra Pavel',
   },
   {
@@ -288,14 +291,14 @@ const news: NewsItem[] = [
         of Technology under the supervision of <strong>Prof. Xianlin Zeng</strong>.
       </>
     ),
-    image: '/images/news/MEng-2024.jpg',
+    image: '/images/originals/news/MEng-2024.jpg',
     imageAlt: 'Group photo at the Pattern Recognition Research Group',
   },
   {
     date: 'Jun 2024',
     title: 'B.Eng. Graduation',
     text: 'Graduated from Beijing Institute of Technology with a B.Eng. degree in automation!!',
-    image: '/images/news/Grad-2024.jpg',
+    image: '/images/originals/news/Grad-2024.jpg',
     imageAlt: 'Graduation ceremony at Beijing Institute of Technology',
   },
 ]
@@ -311,7 +314,7 @@ const newsZh: NewsItem[] = [
         录用并发表。
       </>
     ),
-    image: '/images/news/TSP-2026.png',
+    image: '/images/originals/news/TSP-2026.png',
     imageAlt: 'IEEE TSP 论文示意图',
   },
   {
@@ -324,7 +327,7 @@ const newsZh: NewsItem[] = [
         的学术报告。
       </>
     ),
-    image: '/images/news/So-2026.jpg',
+    image: '/images/originals/news/So-2026.jpg',
     imageAlt: '苏文藻教授学术报告海报',
   },
   {
@@ -337,7 +340,7 @@ const newsZh: NewsItem[] = [
         录用并发表。
       </>
     ),
-    image: '/images/news/JSSC-2026.png',
+    image: '/images/originals/news/JSSC-2026.png',
     imageAlt: 'JSSC 论文示意图',
   },
   {
@@ -349,7 +352,7 @@ const newsZh: NewsItem[] = [
         <em>On System Theory for Learning in Games</em> 的学术报告。
       </>
     ),
-    image: '/images/news/Pavel-2025.jpg',
+    image: '/images/originals/news/Pavel-2025.jpg',
     imageAlt: 'Lacra Pavel 教授学术报告海报',
   },
   {
@@ -360,14 +363,14 @@ const newsZh: NewsItem[] = [
         开始在北京理工大学攻读控制工程硕士学位，导师为<strong>曾宪琳教授</strong>。
       </>
     ),
-    image: '/images/news/MEng-2024.jpg',
+    image: '/images/originals/news/MEng-2024.jpg',
     imageAlt: '模式识别课题组合影',
   },
   {
     date: '2024 年 6 月',
     title: '本科毕业',
     text: '本科顺利毕业于北京理工大学自动化专业!!',
-    image: '/images/news/Grad-2024.jpg',
+    image: '/images/originals/news/Grad-2024.jpg',
     imageAlt: '北京理工大学毕业典礼',
   },
 ]
@@ -411,7 +414,7 @@ const publications: Publication[] = [
     status: 'Accepted in Jun. 2026 · Published in Jun. 2026',
     description:
       'An optimal sparse linear extrapolation based prediction-correction algorithm for efficient and high-order tracking in strongly convex time-varying optimization.',
-    image: '/images/publications/TSP-SEPC.png',
+    image: '/images/originals/publications/TSP-SEPC.png',
     tags: ['IEEE TSP', 'Time-varying optimization', 'Prediction-correction'],
     links: [
       {
@@ -442,7 +445,7 @@ const publications: Publication[] = [
     status: 'Accepted in Feb. 2026 · Published in Apr. 2026',
     description:
       'A primal-dual prediction-correction method with tunable memory for linearly constrained time-varying convex optimization.',
-    image: '/images/publications/JSSC-PDPC.png',
+    image: '/images/originals/publications/JSSC-PDPC.png',
     tags: ['JSSC', 'Primal-dual method', 'Constrained optimization'],
     links: [
       {
@@ -496,7 +499,7 @@ const publicationsZh: Publication[] = [
     status: '2026 年 6 月录用并发表',
     description:
       '提出一种基于稀疏线性外推的最优预测-校正算法，用于强凸时变优化中的高效高阶跟踪。',
-    image: '/images/publications/TSP-SEPC.png',
+    image: '/images/originals/publications/TSP-SEPC.png',
     tags: ['IEEE TSP', '时变优化', '预测-校正'],
     links: [
       {
@@ -527,7 +530,7 @@ const publicationsZh: Publication[] = [
     status: '2026 年 2 月录用 · 2026 年 4 月发表',
     description:
       '提出一种带可调记忆项的原始-对偶预测-校正方法，用于线性约束时变凸优化问题。',
-    image: '/images/publications/JSSC-PDPC.png',
+    image: '/images/originals/publications/JSSC-PDPC.png',
     tags: ['JSSC', '原始-对偶方法', '约束优化'],
     links: [
       {
@@ -561,14 +564,14 @@ const pavelDinner: Moment = {
   category: 'Group Life',
   description:
     'Dinner with my advisor Prof. Xianlin Zeng, Prof. Pavel, and my senior Jie Hou after the seminar.',
-  image: '/images/moments/pavel/dining/pavel-dinner.jpg',
+  image: '/images/originals/moments/pavel/dining/pavel-dinner.jpg',
 }
 
 const pavelSeminar: Moment = {
   title: 'Seminar with Prof. Pavel',
   category: 'Seminar',
   description: 'An academic discussion between Prof. Pavel and senior Kui Zhu during the seminar.',
-  image: '/images/moments/pavel/pavel-seminar.jpg',
+  image: '/images/originals/moments/pavel/pavel-seminar.jpg',
 }
 
 const pavelVisits: Moment[] = [
@@ -576,37 +579,37 @@ const pavelVisits: Moment[] = [
     title: 'Visit Photo 01',
     category: 'Academic Visit',
     description: 'Exploring Beijing together after the seminar.',
-    image: '/images/moments/pavel/visits/pavel1.jpg',
+    image: '/images/originals/moments/pavel/visits/pavel1.jpg',
   },
   {
     title: 'Visit Photo 02',
     category: 'Academic Visit',
     description: 'Exploring Beijing together after the seminar.',
-    image: '/images/moments/pavel/visits/pavel2.jpg',
+    image: '/images/originals/moments/pavel/visits/pavel2.jpg',
   },
   {
     title: 'Visit Photo 03',
     category: 'Academic Visit',
     description: 'Exploring Beijing together after the seminar.',
-    image: '/images/moments/pavel/visits/pavel3.jpg',
+    image: '/images/originals/moments/pavel/visits/pavel3.jpg',
   },
   {
     title: 'Visit Photo 04',
     category: 'Academic Visit',
     description: 'Exploring Beijing together after the seminar.',
-    image: '/images/moments/pavel/visits/pavel4.jpg',
+    image: '/images/originals/moments/pavel/visits/pavel4.jpg',
   },
   {
     title: 'Visit Photo 05',
     category: 'Academic Visit',
     description: 'Exploring Beijing together after the seminar.',
-    image: '/images/moments/pavel/visits/pavel5.jpg',
+    image: '/images/originals/moments/pavel/visits/pavel5.jpg',
   },
   {
     title: 'Visit Photo 06',
     category: 'Academic Visit',
     description: 'Exploring Beijing together after the seminar.',
-    image: '/images/moments/pavel/visits/pavel6.jpg',
+    image: '/images/originals/moments/pavel/visits/pavel6.jpg',
   },
 ]
 
@@ -615,25 +618,25 @@ const groupMoments: Moment[] = [
     title: 'Teachers\' Day 2024',
     category: 'Research Group',
     description: 'Group photo celebrating Teachers\' Day in 2024.',
-    image: '/images/moments/Group/Group-2024.jpg',
+    image: '/images/originals/moments/group/Group-2024.jpg',
   },
   {
     title: 'Advisor Prof. Xianlin Zeng with 2025 Graduates',
     category: 'Research Group',
     description: 'Prof. Xianlin Zeng with graduating students in 2025.',
-    image: '/images/moments/Group/Group-grad-2025.jpg',
+    image: '/images/originals/moments/group/Group-grad-2025.jpg',
   },
   {
     title: 'Teachers\' Day 2025',
     category: 'Research Group',
     description: 'Group photo celebrating Teachers\' Day in 2025.',
-    image: '/images/moments/Group/Group-2025.jpg',
+    image: '/images/originals/moments/group/Group-2025.jpg',
   },
   {
     title: 'Advisor Prof. Xianlin Zeng with 2026 Graduates',
     category: 'Research Group',
     description: 'Prof. Xianlin Zeng with graduating students in 2026.',
-    image: '/images/moments/Group/Group-grad-2026.jpg',
+    image: '/images/originals/moments/group/Group-grad-2026.jpg',
   },
 ]
 
@@ -806,7 +809,7 @@ function App() {
   } | null>(null)
 
   const isChinese = language === 'zh'
-  const avatarSrc = showRealPhoto ? '/images/profile/profile.jpg' : '/images/profile/avatar.jpg'
+  const avatarSrc = showRealPhoto ? '/images/originals/profile/profile.jpg' : '/images/originals/profile/avatar.jpg'
   const avatarAlt = isChinese
     ? showRealPhoto
       ? '林仲豪个人照片'
@@ -901,7 +904,7 @@ function App() {
     const intervalId = window.setInterval(() => {
       setQuoteIndex((current) => (current + 1) % quotes.length)
       setIsQuoteExpanded(false)
-    }, 15000)
+    }, 12000)
 
     return () => window.clearInterval(intervalId)
   }, [])
@@ -1034,7 +1037,7 @@ function App() {
                   aria-label={`View image for ${item.title}`}
                 >
                   <img
-                    src={item.image}
+                    src={thumbnailSrc(item.image)}
                     alt={item.imageAlt ?? item.title}
                     decoding="async"
                     loading="lazy"
@@ -1074,7 +1077,12 @@ function App() {
               }
               aria-label={`View full image for ${paper.title}`}
             >
-              <img src={paper.image} alt={paper.title} decoding="async" loading="lazy" />
+              <img
+                src={thumbnailSrc(paper.image)}
+                alt={paper.title}
+                decoding="async"
+                loading="lazy"
+              />
               <span>{viewLabel}</span>
             </button>
           ) : (
@@ -1153,7 +1161,7 @@ function App() {
               }
             >
               <img
-                src={visiblePavelSeminar.image}
+                src={thumbnailSrc(visiblePavelSeminar.image)}
                 alt={visiblePavelSeminar.title}
                 decoding="async"
                 loading="lazy"
@@ -1176,7 +1184,7 @@ function App() {
               }
             >
               <img
-                src={visiblePavelDinner.image}
+                src={thumbnailSrc(visiblePavelDinner.image)}
                 alt={visiblePavelDinner.title}
                 decoding="async"
                 loading="lazy"
@@ -1207,7 +1215,12 @@ function App() {
                     })
                   }
                 >
-                  <img src={moment.image} alt={moment.title} decoding="async" loading="lazy" />
+                  <img
+                    src={thumbnailSrc(moment.image)}
+                    alt={moment.title}
+                    decoding="async"
+                    loading="lazy"
+                  />
                   <span>{viewLabel}</span>
                 </button>
               ))}
@@ -1234,7 +1247,12 @@ function App() {
                   })
                 }
               >
-                <img src={moment.image} alt={moment.title} decoding="async" loading="lazy" />
+                <img
+                  src={thumbnailSrc(moment.image)}
+                  alt={moment.title}
+                  decoding="async"
+                  loading="lazy"
+                />
                 <div className="momentOverlay">
                   <span>{moment.category}</span>
                   <h3>{moment.title}</h3>
@@ -1269,12 +1287,12 @@ function App() {
                   onClick={() =>
                     setSelectedNewsImage({
                       alt: 'Elephant Head',
-                      src: '/images/Interests/Elephant-head.jpg',
+                      src: '/images/originals/interests/Elephant-head.jpg',
                     })
                   }
                 >
                   <img
-                    src="/images/Interests/Elephant-head.jpg"
+                    src={thumbnailSrc('/images/originals/interests/Elephant-head.jpg')}
                     alt="Elephant Head"
                     decoding="async"
                     loading="lazy"
@@ -1300,17 +1318,17 @@ function App() {
                   onClick={() =>
                     setSelectedNewsImage({
                       alt: '贝伦卡斯泰露与古手梨花',
-                      src: '/images/Interests/e80b6a9837e0e6a5eaed5760085569cc.jpg',
+                      src: '/images/originals/interests/Bern-Rika.jpg',
                     })
                   }
                 >
                   <img
-                    src="/images/Interests/e80b6a9837e0e6a5eaed5760085569cc.jpg"
+                    src={thumbnailSrc('/images/originals/interests/Bern-Rika.jpg')}
                     alt="贝伦卡斯泰露与古手梨花"
                     decoding="async"
                     loading="lazy"
                   />
-                  <span>Bernkastel / Rika</span>
+                  <span>贝伦卡斯泰露 / 古手梨花</span>
                 </button>
                 <div className="interestContent">
                   <div className="interestIcon">02</div>
@@ -1332,12 +1350,12 @@ function App() {
                   onClick={() =>
                     setSelectedNewsImage({
                       alt: '来自新世界',
-                      src: '/images/Interests/New-world.jpg',
+                      src: '/images/originals/interests/New-world.jpg',
                     })
                   }
                 >
                   <img
-                    src="/images/Interests/New-world.jpg"
+                    src={thumbnailSrc('/images/originals/interests/New-world.jpg')}
                     alt="来自新世界"
                     decoding="async"
                     loading="lazy"
@@ -1347,7 +1365,7 @@ function App() {
                   <div className="interestIcon">03</div>
                   <h3>动画</h3>
                   <p>
-                    悬疑类动画看过很多，这里不一一列举。总体来说，我偏爱那些兼具氛围、心理张力和扎实谜题结构的作品。<em>《来自新世界》</em>是其中非常喜欢的一部。从我的 ID 不难推断出，最喜欢的角色是<em>青沼瞬</em>。
+                    悬疑类动画看过很多，这里不一一列举。总体来说，我偏爱那些兼具氛围、心理张力和扎实谜题结构的作品。<em>《来自新世界》</em>是其中非常喜欢的一部。从本网站名不难推断出，我最喜欢的角色是<em>青沼瞬</em>。
                   </p>
                 </div>
               </article>
@@ -1373,12 +1391,12 @@ function App() {
                   onClick={() =>
                     setSelectedNewsImage({
                       alt: 'Elephant Head',
-                      src: '/images/Interests/Elephant-head.jpg',
+                      src: '/images/originals/interests/Elephant-head.jpg',
                     })
                   }
                 >
                   <img
-                    src="/images/Interests/Elephant-head.jpg"
+                    src={thumbnailSrc('/images/originals/interests/Elephant-head.jpg')}
                     alt="Elephant Head"
                     decoding="async"
                     loading="lazy"
@@ -1405,12 +1423,12 @@ function App() {
                   onClick={() =>
                     setSelectedNewsImage({
                       alt: 'Bernkastel and Rika Furude',
-                      src: '/images/Interests/e80b6a9837e0e6a5eaed5760085569cc.jpg',
+                      src: '/images/originals/interests/Bern-Rika.jpg',
                     })
                   }
                 >
                   <img
-                    src="/images/Interests/e80b6a9837e0e6a5eaed5760085569cc.jpg"
+                    src={thumbnailSrc('/images/originals/interests/Bern-Rika.jpg')}
                     alt="Bernkastel and Rika Furude"
                     decoding="async"
                     loading="lazy"
@@ -1426,8 +1444,9 @@ function App() {
                     <em>Higurashi When They Cry</em> and <em>Umineko When They Cry</em>. I also
                     enjoy the <em>Ace Attorney</em> and{' '}
                     <em>Ace Attorney Investigations</em> series. In addition, <em>Ever 17</em>{' '}
-                    and <em>Remember 11</em> from the Infinity series are among my favorites.
-                    My favorite characters are <em>Rika Furude</em> and <em>Bernkastel</em>.
+                    and <em>Remember 11</em> from the Infinity series are among my favorites. As
+                    my avatar suggests, my favorite characters are <em>Rika Furude</em> and{' '}
+                    <em>Bernkastel</em>.
                   </p>
                 </div>
               </article>
@@ -1439,12 +1458,12 @@ function App() {
                   onClick={() =>
                     setSelectedNewsImage({
                       alt: 'From the New World',
-                      src: '/images/Interests/New-world.jpg',
+                      src: '/images/originals/interests/New-world.jpg',
                     })
                   }
                 >
                   <img
-                    src="/images/Interests/New-world.jpg"
+                    src={thumbnailSrc('/images/originals/interests/New-world.jpg')}
                     alt="From the New World"
                     decoding="async"
                     loading="lazy"
@@ -1457,8 +1476,8 @@ function App() {
                     I have watched countless mystery and suspense anime, far too many to
                     list here. In general, I enjoy works that combine atmosphere,
                     psychological tension, and well-structured mysteries.{' '}
-                    <em>From the New World</em> is one of my favorites, and my favorite character is{' '}
-                    <em>Shun Aonuma</em>, as my ID quietly suggests.
+                    <em>From the New World</em> is one of my favorites. As the name of this
+                    website suggests, my favorite character is <em>Shun Aonuma</em>.
                   </p>
                 </div>
               </article>

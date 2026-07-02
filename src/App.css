@@ -1094,6 +1094,7 @@ h1 {
   z-index: 40;
   width: min(1120px, calc(100% - 40px));
   transform: translateX(-50%);
+  animation: quoteSlideUp 0.22s ease both;
 }
 
 .quoteMain {
@@ -1194,14 +1195,41 @@ h1 {
 
 .quoteRestore {
   position: fixed;
-  right: 24px;
-  bottom: 20px;
+  left: 50%;
+  bottom: 0;
   z-index: 40;
-  padding: 11px 16px;
+  transform: translateX(-50%);
+  border-radius: 14px 14px 0 0;
+  padding: 10px 18px 11px;
   color: #071324;
   background: #9fe7dc;
   font-size: 13px;
   box-shadow: 0 18px 48px rgba(0, 0, 0, 0.3);
+  animation: quoteTabRise 0.18s ease both;
+}
+
+@keyframes quoteSlideUp {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+@keyframes quoteTabRise {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 14px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
 }
 
 .footer {
@@ -1271,8 +1299,9 @@ h1 {
   }
 
   .quoteRestore {
-    right: 16px;
-    bottom: 16px;
+    left: 50%;
+    right: auto;
+    bottom: 0;
     max-width: calc(100% - 32px);
   }
 
