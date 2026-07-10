@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from 'react'
+import { useEffect, useLayoutEffect, useState, type ReactNode } from 'react'
 import './App.css'
 
 type NewsItem = {
@@ -882,6 +882,7 @@ function App() {
   }))
   const [isQuoteExpanded, setIsQuoteExpanded] = useState(false)
   const [isQuoteHidden, setIsQuoteHidden] = useState(false)
+  const [isQuoteSuppressed, setIsQuoteSuppressed] = useState(false)
   const [lastUpdatedDate, setLastUpdatedDate] = useState(getLastUpdatedDate)
   const [selectedNewsImage, setSelectedNewsImage] = useState<{
     alt: string
@@ -937,9 +938,36 @@ function App() {
     eyebrow: isChinese
       ? '控制工程硕士生 · 北京理工大学'
       : 'M.Eng. Student · Control Engineering · Beijing Institute of Technology',
-    intro: isChinese
-      ? '我于 2024 年在北京理工大学获自动化专业工学学士学位，目前继续在北京理工大学攻读控制工程硕士学位。我的研究兴趣主要包括分布式优化、时变优化与在线优化。'
-      : 'I received the B.Eng. degree in automation in 2024 from Beijing Institute of Technology, Beijing, China, where I am currently working toward the M.Eng. degree in control engineering. My current research interests focus on distributed optimization, time-varying optimization, and online optimization.',
+    intro: isChinese ? (
+      <>
+        我于 2024 年在北京理工大学获自动化专业工学学士学位，目前继续在北京理工大学攻读控制工程硕士学位，师从
+        <a
+          className="advisorLink"
+          href="https://ac.bit.edu.cn/szdw/jsml/mssbyznxtyjs1/fdc95d4a43f84a61852681b200cb0722.htm"
+          target="_blank"
+          rel="noreferrer"
+        >
+          曾宪琳教授
+        </a>
+        。我的研究兴趣主要包括分布式优化、时变优化与在线优化。
+      </>
+    ) : (
+      <>
+        I received the B.Eng. degree in automation in 2024 from Beijing Institute of
+        Technology, Beijing, China, where I am currently working toward the M.Eng. degree
+        in control engineering under the supervision of{' '}
+        <a
+          className="advisorLink"
+          href="https://ac.bit.edu.cn/szdw/jsml/mssbyznxtyjs1/fdc95d4a43f84a61852681b200cb0722.htm"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Prof. Xianlin Zeng
+        </a>
+        . My current research interests focus on distributed optimization,
+        time-varying optimization, and online optimization.
+      </>
+    ),
     actions: isChinese
       ? ['邮箱', 'GitHub', '英文简历', '中文简历']
       : ['Email', 'GitHub', 'Download CV', '中文简历'],
@@ -985,14 +1013,30 @@ function App() {
     setLastUpdatedDate(getLastUpdatedDate())
   }, [])
 
+  useLayoutEffect(() => {
+    const quoteDock = document.querySelector('.quoteDock')
+    if (!quoteDock) {
+      return
+    }
+
+    const quoteHeight = quoteDock.getBoundingClientRect().height
+    if (quoteHeight > window.innerHeight / 6) {
+      setIsQuoteSuppressed(true)
+    }
+  }, [])
+
   useEffect(() => {
+    if (isQuoteSuppressed) {
+      return undefined
+    }
+
     const timeoutId = window.setTimeout(() => {
       setQuoteRotation((current) => getRelativeQuoteRotation(current, 1, quotes.length))
       setIsQuoteExpanded(false)
     }, 12000)
 
     return () => window.clearTimeout(timeoutId)
-  }, [quoteRotation])
+  }, [isQuoteSuppressed, quoteRotation])
 
   return (
     <main className="page">
@@ -1596,7 +1640,7 @@ function App() {
         <p>{copy.footer}</p>
       </footer>
 
-      {isQuoteHidden ? (
+      {isQuoteSuppressed ? null : isQuoteHidden ? (
         <button
           className="quoteRestore"
           type="button"
