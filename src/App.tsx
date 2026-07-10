@@ -946,6 +946,7 @@ function App() {
     quoteRestoreLabel: isChinese ? '展开语录栏' : 'Show quote dock',
     previousQuoteLabel: isChinese ? '上一句' : 'Previous quote',
     nextQuoteLabel: isChinese ? '下一句' : 'Next quote',
+    backToTopLabel: isChinese ? '回到顶部' : 'Back to top',
     eyebrow: isChinese
       ? '控制工程硕士生 · 北京理工大学'
       : 'M.Eng. Student · Control Engineering · Beijing Institute of Technology',
@@ -1051,10 +1052,16 @@ function App() {
   }, [isQuoteSuppressed, quoteRotation])
 
   return (
-    <main className="page">
+    <main id="top" className="page">
       <div className={`languageDock ${isCompactInitialLayout ? 'compactLanguageDock' : ''}`}>
         {languageToggleControl}
       </div>
+
+      {isCompactInitialLayout ? null : (
+        <a className="backToTopButton" href="#top" aria-label={copy.backToTopLabel}>
+          ↑
+        </a>
+      )}
 
       <header className={`hero ${isCompactInitialLayout ? 'compactHero' : ''}`}>
         {isCompactInitialLayout ? null : (
@@ -1462,10 +1469,13 @@ function App() {
                   <div className="interestIcon">01</div>
                   <h3>推理小说</h3>
                   <p>
-                    我阅读过大量推理小说，喜欢的作家包括<em>埃勒里·奎因</em>、
-                    <em>北山猛邦</em>和<em>白井智之</em>。其中尤其喜欢北山猛邦的
-                    弹丸论破：雾切系列和“杀人城”系列，特别是《石球城杀人事件》；
-                    白井智之的《名侦探的献祭》与《象首迷宫》也很合我的口味。
+                    {'我阅读过大量推理小说，喜欢的作家包括'}
+                    <em>埃勒里·奎因</em>
+                    {'、'}
+                    <em>北山猛邦</em>
+                    {'和'}
+                    <em>白井智之</em>
+                    {'。其中尤其喜欢北山猛邦的弹丸论破：雾切系列和“杀人城”系列，特别是《石球城杀人事件》；白井智之的《名侦探的献祭》与《象首迷宫》也很合我的口味。'}
                   </p>
                 </div>
               </article>
@@ -1493,8 +1503,7 @@ function App() {
                   <div className="interestIcon">02</div>
                   <h3>视觉小说</h3>
                   <p>
-                    我也看过许多悬疑推理向视觉小说。最喜欢的是鸣泣之时系列，包括
-                    寒蝉鸣泣之时与海猫鸣泣之时；从我的头像可推断出，最喜欢的角色是
+                    {'我也看过许多悬疑推理向视觉小说。最喜欢的是鸣泣之时系列，包括寒蝉鸣泣之时与海猫鸣泣之时；从我的头像可推断出，最喜欢的角色是'}
                     <a
                       className="interestLink"
                       href="https://mzh.moegirl.org.cn/%E5%8F%A4%E6%89%8B%E6%A2%A8%E8%8A%B1"
@@ -1503,7 +1512,7 @@ function App() {
                     >
                       古手梨花
                     </a>
-                    和
+                    {'和'}
                     <a
                       className="interestLink"
                       href="https://mzh.moegirl.org.cn/%E8%B4%9D%E4%BC%A6%E5%8D%A1%E6%96%AF%E6%B3%B0%E9%9C%B2"
@@ -1512,7 +1521,7 @@ function App() {
                     >
                       芙蕾德莉卡·贝伦卡斯泰露
                     </a>
-                    。此外，无限轮回系列中的 Ever 17 和 Remember 11 也是我的心头好。
+                    {'。此外，无限轮回系列中的 Ever 17 和 Remember 11 也是我的心头好。'}
                   </p>
                 </div>
               </article>
@@ -1539,7 +1548,7 @@ function App() {
                   <div className="interestIcon">03</div>
                   <h3>动画</h3>
                   <p>
-                    悬疑类动画看过很多，这里不一一列举。总体来说，我偏爱那些兼具氛围、心理张力和扎实谜题结构的作品。《来自新世界》是其中非常喜欢的一部。从本网站名不难推断出，我最喜欢的角色是
+                    {'悬疑类动画看过很多，这里不一一列举。总体来说，我偏爱那些兼具氛围、心理张力和扎实谜题结构的作品。《来自新世界》是其中非常喜欢的一部。从本网站名不难推断出，我最喜欢的角色是'}
                     <a
                       className="interestLink"
                       href="https://mzh.moegirl.org.cn/%E9%9D%92%E6%B2%BC%E7%9E%AC"
@@ -1548,7 +1557,7 @@ function App() {
                     >
                       青沼瞬
                     </a>
-                    。
+                    {'。'}
                   </p>
                 </div>
               </article>
@@ -1591,10 +1600,13 @@ function App() {
                   <p>
                     I have read a wide range of detective novels. Some of my favorite writers
                     include <em>Ellery Queen</em>, <em>Takekuni Kitayama</em>, and{' '}
-                    <em>Tomoyuki Shirai</em>. I particularly love Kitayama&apos;s Danganronpa
-                    Kirigiri series and his Castle series, especially The Murder at the Stone
-                    Ball Castle. I am also fond of Shirai&apos;s Meitantei no Ikenie and
-                    Elephant Head.
+                    <em>Tomoyuki Shirai</em>. I particularly love Kitayama&apos;s{' '}
+                    <span className="interestTitle">Danganronpa Kirigiri</span> series and
+                    his <span className="interestTitle">Castle</span> series, especially{' '}
+                    <span className="interestTitle">The Murder at the Stone Ball Castle</span>.
+                    I am also fond of Shirai&apos;s{' '}
+                    <span className="interestTitle">Meitantei no Ikenie</span> and{' '}
+                    <span className="interestTitle">Elephant Head</span>.
                   </p>
                 </div>
               </article>
@@ -1623,9 +1635,11 @@ function App() {
                   <h3>Visual Novels</h3>
                   <p>
                     I have also enjoyed many mystery-oriented visual novels. My favorite is the{' '}
-                    When They Cry series, including Higurashi When They Cry and Umineko When
-                    They Cry. As my avatar suggests, my favorite characters from the When They
-                    Cry series are{' '}
+                    <span className="interestTitle">When They Cry</span> series, including{' '}
+                    <span className="interestTitle">Higurashi When They Cry</span> and{' '}
+                    <span className="interestTitle">Umineko When They Cry</span>. As my avatar
+                    suggests, my favorite characters from the{' '}
+                    <span className="interestTitle">When They Cry</span> series are{' '}
                     <a
                       className="interestLink"
                       href="https://mzh.moegirl.org.cn/%E5%8F%A4%E6%89%8B%E6%A2%A8%E8%8A%B1"
@@ -1643,8 +1657,10 @@ function App() {
                     >
                       Frederica Bernkastel
                     </a>
-                    . In addition, Ever 17 and Remember 11 from the Infinity series are among
-                    my favorites.
+                    . In addition, <span className="interestTitle">Ever 17</span> and{' '}
+                    <span className="interestTitle">Remember 11</span> from the{' '}
+                    <span className="interestTitle">Infinity</span> series are among my
+                    favorites.
                   </p>
                 </div>
               </article>
@@ -1674,8 +1690,8 @@ function App() {
                     I have watched countless mystery and suspense anime, far too many to
                     list here. In general, I enjoy works that combine atmosphere,
                     psychological tension, and well-structured mysteries.{' '}
-                    From the New World is one of my favorites. As the name of this website
-                    suggests, my favorite character is{' '}
+                    <span className="interestTitle">From the New World</span> is one of my
+                    favorites. As the name of this website suggests, my favorite character is{' '}
                     <a
                       className="interestLink"
                       href="https://mzh.moegirl.org.cn/%E9%9D%92%E6%B2%BC%E7%9E%AC"

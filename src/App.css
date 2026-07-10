@@ -48,23 +48,61 @@ a {
 .languageDock {
   position: fixed;
   top: 24px;
-  right: 24px;
+  right: 96px;
   z-index: 90;
-  padding: 6px;
-  border: 1px solid rgba(159, 231, 220, 0.22);
+  padding: 7px;
+  border: 1px solid rgba(159, 231, 220, 0.46);
   border-radius: 999px;
   background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(159, 231, 220, 0.035)),
-    rgba(7, 19, 36, 0.76);
+    linear-gradient(135deg, rgba(159, 231, 220, 0.2), rgba(143, 179, 255, 0.16)),
+    rgba(7, 19, 36, 0.86);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.08),
-    0 16px 42px rgba(0, 0, 0, 0.28);
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 18px 48px rgba(0, 0, 0, 0.34),
+    0 0 0 5px rgba(159, 231, 220, 0.08);
   backdrop-filter: blur(18px);
 }
 
 .compactLanguageDock {
   top: 14px;
   right: 14px;
+}
+
+.backToTopButton {
+  position: fixed;
+  top: 27px;
+  right: 24px;
+  z-index: 91;
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border: 1px solid rgba(159, 231, 220, 0.42);
+  border-radius: 50%;
+  color: #061c1b;
+  background:
+    linear-gradient(135deg, rgba(159, 231, 220, 0.88), rgba(143, 179, 255, 0.56)),
+    rgba(255, 255, 255, 0.1);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    0 18px 44px rgba(0, 0, 0, 0.3),
+    0 0 0 5px rgba(159, 231, 220, 0.07);
+  font-size: 24px;
+  font-weight: 950;
+  line-height: 1;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.backToTopButton:hover {
+  transform: translateY(-2px);
+  border-color: rgba(200, 255, 247, 0.72);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    0 22px 52px rgba(0, 0, 0, 0.34),
+    0 0 0 6px rgba(159, 231, 220, 0.1);
 }
 
 .nav {
@@ -209,12 +247,31 @@ a {
 }
 
 .languageDock .languageToggle {
-  width: 152px;
-  height: 46px;
+  width: 168px;
+  height: 50px;
+  border-color: rgba(159, 231, 220, 0.62);
+  background: rgba(5, 16, 31, 0.84);
+}
+
+.languageDock .languageToggleThumb {
+  border-color: rgba(200, 255, 247, 0.72);
+  background:
+    linear-gradient(135deg, rgba(159, 231, 220, 0.82), rgba(143, 179, 255, 0.5)),
+    rgba(255, 255, 255, 0.12);
+  box-shadow:
+    0 10px 24px rgba(0, 0, 0, 0.24),
+    0 0 22px rgba(159, 231, 220, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 .languageDock .languageToggleOption {
-  font-size: 15px;
+  font-size: 16px;
+  letter-spacing: 0.02em;
+}
+
+.languageDock .languageToggle.isEn .languageToggleOption:first-of-type,
+.languageDock .languageToggle.isZh .languageToggleOption:last-of-type {
+  color: #061c1b;
 }
 
 .heroContent {
@@ -1260,6 +1317,12 @@ h1 {
   font-weight: 850;
 }
 
+.interestTitle {
+  color: #d8e2f6;
+  font-style: italic;
+  font-weight: 500;
+}
+
 .interestLink {
   color: #a9bddc;
   font-weight: 850;
@@ -1472,6 +1535,18 @@ h1 {
   .languageDock {
     top: 14px;
     right: 14px;
+    padding: 6px;
+    border-color: rgba(159, 231, 220, 0.22);
+    background:
+      linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(159, 231, 220, 0.035)),
+      rgba(7, 19, 36, 0.76);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.08),
+      0 16px 42px rgba(0, 0, 0, 0.28);
+  }
+
+  .backToTopButton {
+    display: none;
   }
 
   .navLinks {
@@ -1504,10 +1579,28 @@ h1 {
   .languageDock .languageToggle {
     width: 116px;
     height: 38px;
+    border-color: rgba(159, 231, 220, 0.38);
+    background: rgba(7, 19, 36, 0.7);
+  }
+
+  .languageDock .languageToggleThumb {
+    border-color: rgba(159, 231, 220, 0.46);
+    background:
+      linear-gradient(135deg, rgba(159, 231, 220, 0.24), rgba(143, 179, 255, 0.14)),
+      rgba(255, 255, 255, 0.075);
+    box-shadow:
+      0 8px 20px rgba(0, 0, 0, 0.16),
+      inset 0 1px 0 rgba(255, 255, 255, 0.12);
   }
 
   .languageDock .languageToggleOption {
     font-size: 14px;
+    letter-spacing: 0;
+  }
+
+  .languageDock .languageToggle.isEn .languageToggleOption:first-of-type,
+  .languageDock .languageToggle.isZh .languageToggleOption:last-of-type {
+    color: #ffffff;
   }
 
   .navLinks a {
