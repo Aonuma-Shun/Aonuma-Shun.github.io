@@ -46,11 +46,87 @@ type QuoteEntry = {
 
 type Language = 'en' | 'zh'
 
+type QuoteRotation = {
+  order: number[]
+  position: number
+}
+
 const moegirlUrl = (pageTitle: string) =>
   `https://zh.moegirl.org.cn/${encodeURIComponent(pageTitle)}`
 
 const thumbnailSrc = (src: string) =>
   src.replace('/images/originals/', '/images/thumbs/').replace(/\.(jpe?g|png)$/i, '.jpg')
+
+const getLastUpdatedDate = () => {
+  if (typeof document === 'undefined') {
+    return new Date()
+  }
+
+  const lastModifiedDate = new Date(document.lastModified)
+  return Number.isNaN(lastModifiedDate.getTime()) ? new Date() : lastModifiedDate
+}
+
+const formatLastUpdatedDate = (date: Date, language: Language) => {
+  if (language === 'zh') {
+    return `${date.getFullYear()} 年 ${date.getMonth() + 1} 月 ${date.getDate()} 日`
+  }
+
+  return new Intl.DateTimeFormat('en-US', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  }).format(date)
+}
+
+const createShuffledQuoteOrder = (
+  length: number,
+  avoidIndex?: number,
+  avoidPosition: 'first' | 'last' = 'first',
+) => {
+  const order = Array.from({ length }, (_, index) => index)
+
+  for (let index = order.length - 1; index > 0; index -= 1) {
+    const randomIndex = Math.floor(Math.random() * (index + 1))
+    const currentValue = order[index]
+    order[index] = order[randomIndex]
+    order[randomIndex] = currentValue
+  }
+
+  const edgeIndex = avoidPosition === 'first' ? 0 : order.length - 1
+  if (order.length > 1 && avoidIndex !== undefined && order[edgeIndex] === avoidIndex) {
+    const swapIndex = avoidPosition === 'first' ? 1 : order.length - 2
+    const edgeValue = order[edgeIndex]
+    order[edgeIndex] = order[swapIndex]
+    order[swapIndex] = edgeValue
+  }
+
+  return order
+}
+
+const getRelativeQuoteRotation = (current: QuoteRotation, step: 1 | -1, quoteCount: number) => {
+  const currentQuoteIndex = current.order[current.position] ?? 0
+
+  if (step === 1) {
+    if (current.position < current.order.length - 1) {
+      return { ...current, position: current.position + 1 }
+    }
+
+    return {
+      order: createShuffledQuoteOrder(quoteCount, currentQuoteIndex, 'first'),
+      position: 0,
+    }
+  }
+
+  if (current.position > 0) {
+    return { ...current, position: current.position - 1 }
+  }
+
+  const order = createShuffledQuoteOrder(quoteCount, currentQuoteIndex, 'last')
+  return {
+    order,
+    position: order.length - 1,
+  }
+}
 
 const quotes: QuoteEntry[] = [
   {
@@ -146,7 +222,7 @@ const quotes: QuoteEntry[] = [
       text: 'Could her fate also be rewritten?',
       source: 'Rewrite',
     },
-    link: moegirlUrl('Rewrite'),
+    link: 'https://zh.moegirl.org.cn/Rewrite%28%E6%B8%B8%E6%88%8F%29',
     zh: {
       text: '她的命运，是否也有可能被改写？',
       source: '罚抄',
@@ -201,7 +277,7 @@ const quotes: QuoteEntry[] = [
       text: 'You can bear them only because they are not your tragedy.',
       source: 'The House in Fata Morgana',
     },
-    link: moegirlUrl('The House in Fata Morgana'),
+    link: 'https://zh.moegirl.org.cn/%E6%B5%B7%E5%B8%82%E8%9C%83%E6%A5%BC%E4%B9%8B%E9%A6%86',
     zh: {
       text: '正因为是别人的悲剧，所以才能承受。',
       source: '海市蜃楼之馆',
@@ -800,9 +876,13 @@ function NavIcon({ name }: { name: NavIconName }) {
 function App() {
   const [language, setLanguage] = useState<Language>('en')
   const [showRealPhoto, setShowRealPhoto] = useState(false)
-  const [quoteIndex, setQuoteIndex] = useState(0)
+  const [quoteRotation, setQuoteRotation] = useState<QuoteRotation>(() => ({
+    order: createShuffledQuoteOrder(quotes.length),
+    position: 0,
+  }))
   const [isQuoteExpanded, setIsQuoteExpanded] = useState(false)
   const [isQuoteHidden, setIsQuoteHidden] = useState(false)
+  const [lastUpdatedDate, setLastUpdatedDate] = useState(getLastUpdatedDate)
   const [selectedNewsImage, setSelectedNewsImage] = useState<{
     alt: string
     src: string
@@ -826,7 +906,7 @@ function App() {
       : 'Switch to profile photo'
   const viewLabel = isChinese ? '查看' : 'View'
   const closeLabel = isChinese ? '关闭' : 'Close'
-  const currentQuote = quotes[quoteIndex % quotes.length]
+  const currentQuote = quotes[quoteRotation.order[quoteRotation.position] ?? 0] ?? quotes[0]
   const currentQuoteContent = isChinese ? currentQuote.zh : currentQuote.en
   const visibleNews = isChinese ? newsZh : news
   const visiblePublicationGroups = groupPublications(isChinese ? publicationsZh : publications)
@@ -834,6 +914,7 @@ function App() {
   const visiblePavelSeminar = isChinese ? pavelSeminarZh : pavelSeminar
   const visiblePavelVisits = isChinese ? pavelVisitsZh : pavelVisits
   const visibleGroupMoments = isChinese ? groupMomentsZh : groupMoments
+  const formattedLastUpdatedDate = formatLastUpdatedDate(lastUpdatedDate, language)
   const copy = {
     brand: isChinese ? '欢迎来到林仲豪的主页 (^_^)' : 'Welcome to Zhonghao\'s Homepage (^_^)',
     languageToggle: isChinese ? 'EN' : '中文',
@@ -843,8 +924,8 @@ function App() {
       ? ['新闻', '论文', '片段', '兴趣']
       : ['News', 'Publications', 'Moments', 'Interests'],
     siteNote: isChinese
-      ? '本站仍在建设中，上一次更新于 2026 年 7 月 1 日。'
-      : 'This website is still under construction. Last updated on July 1, 2026.',
+      ? `本站仍在持续更新，最后更新于 ${formattedLastUpdatedDate}。`
+      : `This website is continuously updated. Last updated on ${formattedLastUpdatedDate}.`,
     quoteKicker: isChinese ? '随机语录' : 'Rotating Quote',
     quoteTitle: isChinese ? '视觉小说片段' : 'Fragments in Visual Novels',
     quoteHint: isChinese ? '点击展开出处' : 'Click to expand source',
@@ -891,23 +972,27 @@ function App() {
   }
 
   const showPreviousQuote = () => {
-    setQuoteIndex((current) => (current === 0 ? quotes.length - 1 : current - 1))
+    setQuoteRotation((current) => getRelativeQuoteRotation(current, -1, quotes.length))
     setIsQuoteExpanded(false)
   }
 
   const showNextQuote = () => {
-    setQuoteIndex((current) => (current + 1) % quotes.length)
+    setQuoteRotation((current) => getRelativeQuoteRotation(current, 1, quotes.length))
     setIsQuoteExpanded(false)
   }
 
   useEffect(() => {
-    const intervalId = window.setInterval(() => {
-      setQuoteIndex((current) => (current + 1) % quotes.length)
+    setLastUpdatedDate(getLastUpdatedDate())
+  }, [])
+
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => {
+      setQuoteRotation((current) => getRelativeQuoteRotation(current, 1, quotes.length))
       setIsQuoteExpanded(false)
     }, 12000)
 
-    return () => window.clearInterval(intervalId)
-  }, [])
+    return () => window.clearTimeout(timeoutId)
+  }, [quoteRotation])
 
   return (
     <main className="page">
@@ -936,13 +1021,14 @@ function App() {
             </div>
 
             <button
-              className="languageToggle"
+              className={`languageToggle ${isChinese ? 'isZh' : 'isEn'}`}
               type="button"
               onClick={toggleLanguage}
               aria-label={copy.switchLanguageLabel}
             >
-              <span>{copy.languageToggle}</span>
-              <small>{copy.languageToggleSub}</small>
+              <span className="languageToggleThumb" aria-hidden="true" />
+              <span className="languageToggleOption">EN</span>
+              <span className="languageToggleOption">中文</span>
             </button>
           </div>
         </nav>
@@ -951,22 +1037,28 @@ function App() {
 
         <section className="heroContent">
           <div className="avatarPanel">
-  <img
-    key={avatarSrc}
-    className="avatar"
-    src={avatarSrc}
-    alt={avatarAlt}
-    decoding="async"
-    loading="eager"
-    title={avatarButtonText}
-    onClick={toggleAvatar}
-  />
+            <img
+              key={avatarSrc}
+              className="avatar"
+              src={avatarSrc}
+              alt={avatarAlt}
+              decoding="async"
+              loading="eager"
+              title={avatarButtonText}
+              onClick={toggleAvatar}
+            />
 
-  <button className="avatarToggle" type="button" onClick={toggleAvatar}>
-    <ActionIcon name="switch" />
-    {avatarButtonText}
-  </button>
-</div>
+            <button
+              className={`avatarToggle ${showRealPhoto ? 'isPhoto' : 'isAnime'}`}
+              type="button"
+              onClick={toggleAvatar}
+              aria-label={avatarButtonText}
+            >
+              <span className="avatarToggleThumb" aria-hidden="true" />
+              <span className="avatarToggleOption">{isChinese ? '动漫' : 'Anime'}</span>
+              <span className="avatarToggleOption">{isChinese ? '照片' : 'Photo'}</span>
+            </button>
+          </div>
 
           <div className="heroText">
             <p className="eyebrow">{copy.eyebrow}</p>
@@ -1009,6 +1101,21 @@ function App() {
           </div>
         </section>
       </header>
+
+      <a
+        className="researchSlidePanel"
+        href="/files/tv-optimization.pdf"
+        target="_blank"
+        rel="noreferrer"
+      >
+        <span>{isChinese ? '研究速览' : 'Research Overview'}</span>
+        <p>
+          {isChinese
+            ? '如果您想大致了解我目前的研究内容，可以查看这份关于时变优化的中文学术幻灯片。'
+            : 'For a quick overview of my current research, please see this Chinese slide on time-varying optimization.'}
+        </p>
+        <strong>{isChinese ? '查看幻灯片' : 'View slides'} ↗</strong>
+      </a>
 
       <section id="news" className="section">
         <div className="sectionHeader">
@@ -1273,7 +1380,7 @@ function App() {
         {isChinese ? (
           <div className="interestShowcase">
             <div className="interestsIntro">
-              <span>Mystery-Oriented</span>
+              <span className="zhInterestLabel">悬疑推理谜</span>
               <p>
                 学术之外，我是一个重度悬疑推理爱好者。我阅读过大量推理小说、悬疑视觉小说，也看过很多悬疑动画；我尤其喜欢精巧谜题、叙述性诡计，以及层层反转后仍能自洽的真相。
               </p>
@@ -1306,7 +1413,7 @@ function App() {
                     <em>北山猛邦</em>和<em>白井智之</em>。其中尤其喜欢北山猛邦的
                     <em>弹丸论破：雾切</em>系列和“杀人城”系列，特别是
                     <em>《石球城杀人事件》</em>；白井智之的<em>《名侦探的献祭》</em>与
-                    <em>《Elephant Head》</em>也很合我的口味。
+                    <em>《象首迷宫》</em>也很合我的口味。
                   </p>
                 </div>
               </article>
@@ -1334,11 +1441,11 @@ function App() {
                   <div className="interestIcon">02</div>
                   <h3>视觉小说</h3>
                   <p>
-                    我也看过许多悬疑推理向视觉小说。最喜欢的是 <em>When They Cry</em>{' '}
-                    系列，包括<em>寒蝉鸣泣之时</em>与<em>海猫鸣泣之时</em>；
-                    <em>逆转裁判</em>和<em>逆转检事</em>系列也很喜欢。此外，Infinity 系列中的{' '}
+                    我也看过许多悬疑推理向视觉小说。最喜欢的是<em>鸣泣之时</em>系列，包括
+                    <em>寒蝉鸣泣之时</em>与<em>海猫鸣泣之时</em>；从我的头像可推断出，最喜欢的角色是
+                    <em>古手梨花</em>和<em>芙蕾德莉卡·贝伦卡斯泰露</em>。此外，无限轮回系列中的{' '}
                     <em>Ever 17</em> 和 <em>Remember 11</em>{' '}
-                    也是我的心头好。从我的头像可推断出，最喜欢的角色是<em>古手梨花</em>和<em>贝伦卡斯泰露</em>。
+                    也是我的心头好。
                   </p>
                 </div>
               </article>
@@ -1441,12 +1548,11 @@ function App() {
                   <p>
                     I have also enjoyed many mystery-oriented visual novels. My favorite is the{' '}
                     <em>When They Cry</em> series, including{' '}
-                    <em>Higurashi When They Cry</em> and <em>Umineko When They Cry</em>. I also
-                    enjoy the <em>Ace Attorney</em> and{' '}
-                    <em>Ace Attorney Investigations</em> series. In addition, <em>Ever 17</em>{' '}
-                    and <em>Remember 11</em> from the Infinity series are among my favorites. As
-                    my avatar suggests, my favorite characters are <em>Rika Furude</em> and{' '}
-                    <em>Bernkastel</em>.
+                    <em>Higurashi When They Cry</em> and <em>Umineko When They Cry</em>. As my
+                    avatar suggests, my favorite characters from the <em>When They Cry</em> series are{' '}
+                    <em>Rika Furude</em> and <em>Frederica Bernkastel</em>. In addition,{' '}
+                    <em>Ever 17</em> and <em>Remember 11</em> from the Infinity series are among
+                    my favorites.
                   </p>
                 </div>
               </article>
