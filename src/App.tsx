@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useState, type ReactNode } from 'react'
+import { useEffect, useState, type ReactNode } from 'react'
 import './App.css'
 
 type NewsItem = {
@@ -51,6 +51,8 @@ type QuoteRotation = {
   position: number
 }
 
+const COMPACT_LAYOUT_MAX_WIDTH = 720
+
 const moegirlUrl = (pageTitle: string) =>
   `https://zh.moegirl.org.cn/${encodeURIComponent(pageTitle)}`
 
@@ -64,6 +66,14 @@ const getLastUpdatedDate = () => {
 
   const lastModifiedDate = new Date(document.lastModified)
   return Number.isNaN(lastModifiedDate.getTime()) ? new Date() : lastModifiedDate
+}
+
+const getInitialCompactLayout = () => {
+  if (typeof window === 'undefined') {
+    return false
+  }
+
+  return window.innerWidth <= COMPACT_LAYOUT_MAX_WIDTH
 }
 
 const formatLastUpdatedDate = (date: Date, language: Language) => {
@@ -875,6 +885,7 @@ function NavIcon({ name }: { name: NavIconName }) {
 
 function App() {
   const [language, setLanguage] = useState<Language>('en')
+  const [isCompactInitialLayout] = useState(getInitialCompactLayout)
   const [showRealPhoto, setShowRealPhoto] = useState(false)
   const [quoteRotation, setQuoteRotation] = useState<QuoteRotation>(() => ({
     order: createShuffledQuoteOrder(quotes.length),
@@ -882,7 +893,7 @@ function App() {
   }))
   const [isQuoteExpanded, setIsQuoteExpanded] = useState(false)
   const [isQuoteHidden, setIsQuoteHidden] = useState(false)
-  const [isQuoteSuppressed, setIsQuoteSuppressed] = useState(false)
+  const isQuoteSuppressed = isCompactInitialLayout
   const [lastUpdatedDate, setLastUpdatedDate] = useState(getLastUpdatedDate)
   const [selectedNewsImage, setSelectedNewsImage] = useState<{
     alt: string
@@ -999,6 +1010,19 @@ function App() {
     setLanguage((current) => (current === 'en' ? 'zh' : 'en'))
   }
 
+  const languageToggleControl = (
+    <button
+      className={`languageToggle ${isChinese ? 'isZh' : 'isEn'}`}
+      type="button"
+      onClick={toggleLanguage}
+      aria-label={copy.switchLanguageLabel}
+    >
+      <span className="languageToggleThumb" aria-hidden="true" />
+      <span className="languageToggleOption">EN</span>
+      <span className="languageToggleOption">中文</span>
+    </button>
+  )
+
   const showPreviousQuote = () => {
     setQuoteRotation((current) => getRelativeQuoteRotation(current, -1, quotes.length))
     setIsQuoteExpanded(false)
@@ -1011,18 +1035,6 @@ function App() {
 
   useEffect(() => {
     setLastUpdatedDate(getLastUpdatedDate())
-  }, [])
-
-  useLayoutEffect(() => {
-    const quoteDock = document.querySelector('.quoteDock')
-    if (!quoteDock) {
-      return
-    }
-
-    const quoteHeight = quoteDock.getBoundingClientRect().height
-    if (quoteHeight > window.innerHeight / 6) {
-      setIsQuoteSuppressed(true)
-    }
   }, [])
 
   useEffect(() => {
@@ -1040,44 +1052,41 @@ function App() {
 
   return (
     <main className="page">
-      <header className="hero">
-        <nav className="nav">
-          <div className="brand">{copy.brand}</div>
+      <div className={`languageDock ${isCompactInitialLayout ? 'compactLanguageDock' : ''}`}>
+        {languageToggleControl}
+      </div>
 
-          <div className="navActions">
-            <div className="navLinks">
-              <a href="#news">
-                <NavIcon name="news" />
-                {copy.nav[0]}
-              </a>
-              <a href="#publications">
-                <NavIcon name="publications" />
-                {copy.nav[1]}
-              </a>
-              <a href="#moments">
-                <NavIcon name="moments" />
-                {copy.nav[2]}
-              </a>
-              <a href="#interests">
-                <NavIcon name="interests" />
-                {copy.nav[3]}
-              </a>
-            </div>
+      <header className={`hero ${isCompactInitialLayout ? 'compactHero' : ''}`}>
+        {isCompactInitialLayout ? null : (
+          <>
+            <nav className="nav">
+              <div className="brand">{copy.brand}</div>
 
-            <button
-              className={`languageToggle ${isChinese ? 'isZh' : 'isEn'}`}
-              type="button"
-              onClick={toggleLanguage}
-              aria-label={copy.switchLanguageLabel}
-            >
-              <span className="languageToggleThumb" aria-hidden="true" />
-              <span className="languageToggleOption">EN</span>
-              <span className="languageToggleOption">中文</span>
-            </button>
-          </div>
-        </nav>
+              <div className="navActions">
+                <div className="navLinks">
+                  <a href="#news">
+                    <NavIcon name="news" />
+                    {copy.nav[0]}
+                  </a>
+                  <a href="#publications">
+                    <NavIcon name="publications" />
+                    {copy.nav[1]}
+                  </a>
+                  <a href="#moments">
+                    <NavIcon name="moments" />
+                    {copy.nav[2]}
+                  </a>
+                  <a href="#interests">
+                    <NavIcon name="interests" />
+                    {copy.nav[3]}
+                  </a>
+                </div>
+              </div>
+            </nav>
 
-        <aside className="siteNote heroNote">{copy.siteNote}</aside>
+            <aside className="siteNote heroNote">{copy.siteNote}</aside>
+          </>
+        )}
 
         <section className="heroContent">
           <div className="avatarPanel">
@@ -1455,9 +1464,8 @@ function App() {
                   <p>
                     我阅读过大量推理小说，喜欢的作家包括<em>埃勒里·奎因</em>、
                     <em>北山猛邦</em>和<em>白井智之</em>。其中尤其喜欢北山猛邦的
-                    <em>弹丸论破：雾切</em>系列和“杀人城”系列，特别是
-                    <em>《石球城杀人事件》</em>；白井智之的<em>《名侦探的献祭》</em>与
-                    <em>《象首迷宫》</em>也很合我的口味。
+                    弹丸论破：雾切系列和“杀人城”系列，特别是《石球城杀人事件》；
+                    白井智之的《名侦探的献祭》与《象首迷宫》也很合我的口味。
                   </p>
                 </div>
               </article>
@@ -1485,11 +1493,26 @@ function App() {
                   <div className="interestIcon">02</div>
                   <h3>视觉小说</h3>
                   <p>
-                    我也看过许多悬疑推理向视觉小说。最喜欢的是<em>鸣泣之时</em>系列，包括
-                    <em>寒蝉鸣泣之时</em>与<em>海猫鸣泣之时</em>；从我的头像可推断出，最喜欢的角色是
-                    <em>古手梨花</em>和<em>芙蕾德莉卡·贝伦卡斯泰露</em>。此外，无限轮回系列中的{' '}
-                    <em>Ever 17</em> 和 <em>Remember 11</em>{' '}
-                    也是我的心头好。
+                    我也看过许多悬疑推理向视觉小说。最喜欢的是鸣泣之时系列，包括
+                    寒蝉鸣泣之时与海猫鸣泣之时；从我的头像可推断出，最喜欢的角色是
+                    <a
+                      className="interestLink"
+                      href="https://mzh.moegirl.org.cn/%E5%8F%A4%E6%89%8B%E6%A2%A8%E8%8A%B1"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      古手梨花
+                    </a>
+                    和
+                    <a
+                      className="interestLink"
+                      href="https://mzh.moegirl.org.cn/%E8%B4%9D%E4%BC%A6%E5%8D%A1%E6%96%AF%E6%B3%B0%E9%9C%B2"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      芙蕾德莉卡·贝伦卡斯泰露
+                    </a>
+                    。此外，无限轮回系列中的 Ever 17 和 Remember 11 也是我的心头好。
                   </p>
                 </div>
               </article>
@@ -1516,7 +1539,16 @@ function App() {
                   <div className="interestIcon">03</div>
                   <h3>动画</h3>
                   <p>
-                    悬疑类动画看过很多，这里不一一列举。总体来说，我偏爱那些兼具氛围、心理张力和扎实谜题结构的作品。<em>《来自新世界》</em>是其中非常喜欢的一部。从本网站名不难推断出，我最喜欢的角色是<em>青沼瞬</em>。
+                    悬疑类动画看过很多，这里不一一列举。总体来说，我偏爱那些兼具氛围、心理张力和扎实谜题结构的作品。《来自新世界》是其中非常喜欢的一部。从本网站名不难推断出，我最喜欢的角色是
+                    <a
+                      className="interestLink"
+                      href="https://mzh.moegirl.org.cn/%E9%9D%92%E6%B2%BC%E7%9E%AC"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      青沼瞬
+                    </a>
+                    。
                   </p>
                 </div>
               </article>
@@ -1559,10 +1591,10 @@ function App() {
                   <p>
                     I have read a wide range of detective novels. Some of my favorite writers
                     include <em>Ellery Queen</em>, <em>Takekuni Kitayama</em>, and{' '}
-                    <em>Tomoyuki Shirai</em>. I particularly love Kitayama&apos;s{' '}
-                    <em>Danganronpa Kirigiri</em> series and his <em>Castle</em> series,
-                    especially <em>The Murder at the Stone Ball Castle</em>. I am also fond of
-                    Shirai&apos;s <em>Meitantei no Ikenie</em> and <em>Elephant Head</em>.
+                    <em>Tomoyuki Shirai</em>. I particularly love Kitayama&apos;s Danganronpa
+                    Kirigiri series and his Castle series, especially The Murder at the Stone
+                    Ball Castle. I am also fond of Shirai&apos;s Meitantei no Ikenie and
+                    Elephant Head.
                   </p>
                 </div>
               </article>
@@ -1591,11 +1623,27 @@ function App() {
                   <h3>Visual Novels</h3>
                   <p>
                     I have also enjoyed many mystery-oriented visual novels. My favorite is the{' '}
-                    <em>When They Cry</em> series, including{' '}
-                    <em>Higurashi When They Cry</em> and <em>Umineko When They Cry</em>. As my
-                    avatar suggests, my favorite characters from the <em>When They Cry</em> series are{' '}
-                    <em>Rika Furude</em> and <em>Frederica Bernkastel</em>. In addition,{' '}
-                    <em>Ever 17</em> and <em>Remember 11</em> from the Infinity series are among
+                    When They Cry series, including Higurashi When They Cry and Umineko When
+                    They Cry. As my avatar suggests, my favorite characters from the When They
+                    Cry series are{' '}
+                    <a
+                      className="interestLink"
+                      href="https://mzh.moegirl.org.cn/%E5%8F%A4%E6%89%8B%E6%A2%A8%E8%8A%B1"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      Rika Furude
+                    </a>{' '}
+                    and{' '}
+                    <a
+                      className="interestLink"
+                      href="https://mzh.moegirl.org.cn/%E8%B4%9D%E4%BC%A6%E5%8D%A1%E6%96%AF%E6%B3%B0%E9%9C%B2"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      Frederica Bernkastel
+                    </a>
+                    . In addition, Ever 17 and Remember 11 from the Infinity series are among
                     my favorites.
                   </p>
                 </div>
@@ -1626,8 +1674,17 @@ function App() {
                     I have watched countless mystery and suspense anime, far too many to
                     list here. In general, I enjoy works that combine atmosphere,
                     psychological tension, and well-structured mysteries.{' '}
-                    <em>From the New World</em> is one of my favorites. As the name of this
-                    website suggests, my favorite character is <em>Shun Aonuma</em>.
+                    From the New World is one of my favorites. As the name of this website
+                    suggests, my favorite character is{' '}
+                    <a
+                      className="interestLink"
+                      href="https://mzh.moegirl.org.cn/%E9%9D%92%E6%B2%BC%E7%9E%AC"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      Shun Aonuma
+                    </a>
+                    .
                   </p>
                 </div>
               </article>

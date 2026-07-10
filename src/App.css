@@ -41,6 +41,32 @@ a {
   padding: 28px 0 36px;
 }
 
+.compactHero {
+  padding-top: 74px;
+}
+
+.languageDock {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  z-index: 90;
+  padding: 6px;
+  border: 1px solid rgba(159, 231, 220, 0.22);
+  border-radius: 999px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(159, 231, 220, 0.035)),
+    rgba(7, 19, 36, 0.76);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 16px 42px rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(18px);
+}
+
+.compactLanguageDock {
+  top: 14px;
+  right: 14px;
+}
+
 .nav {
   display: flex;
   align-items: center;
@@ -180,6 +206,15 @@ a {
 .languageToggle.isEn .languageToggleOption:first-of-type,
 .languageToggle.isZh .languageToggleOption:last-of-type {
   color: #ffffff;
+}
+
+.languageDock .languageToggle {
+  width: 152px;
+  height: 46px;
+}
+
+.languageDock .languageToggleOption {
+  font-size: 15px;
 }
 
 .heroContent {
@@ -380,9 +415,9 @@ h1 {
 }
 
 .actions .zhCvAction {
-  border-color: rgba(255, 209, 102, 0.78);
-  background: #ffd166;
-  color: #241806;
+  border-color: rgba(196, 181, 253, 0.78);
+  background: #c4b5fd;
+  color: #17122b;
 }
 
 .actions a:hover {
@@ -407,8 +442,8 @@ h1 {
 }
 
 .actions .zhCvAction:hover {
-  border-color: #ffe4a3;
-  background: #ffe4a3;
+  border-color: #ddd6fe;
+  background: #ddd6fe;
 }
 
 .actionIcon {
@@ -1220,9 +1255,26 @@ h1 {
 }
 
 .interestCard em {
-  color: #ffffff;
+  color: #a9bddc;
   font-style: normal;
   font-weight: 850;
+}
+
+.interestLink {
+  color: #a9bddc;
+  font-weight: 850;
+  text-decoration: underline;
+  text-decoration-color: rgba(169, 189, 220, 0.34);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+  transition:
+    color 0.2s ease,
+    text-decoration-color 0.2s ease;
+}
+
+.interestLink:hover {
+  color: #c5d5f0;
+  text-decoration-color: rgba(197, 213, 240, 0.72);
 }
 
 .siteNote {
@@ -1414,6 +1466,12 @@ h1 {
   .nav {
     align-items: flex-start;
     flex-direction: column;
+    padding-right: 0;
+  }
+
+  .languageDock {
+    top: 14px;
+    right: 14px;
   }
 
   .navLinks {
@@ -1441,6 +1499,15 @@ h1 {
   .languageToggle {
     width: 116px;
     height: 38px;
+  }
+
+  .languageDock .languageToggle {
+    width: 116px;
+    height: 38px;
+  }
+
+  .languageDock .languageToggleOption {
+    font-size: 14px;
   }
 
   .navLinks a {
@@ -1508,6 +1575,20 @@ h1 {
     gap: 36px;
   }
 
+  .actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(128px, 1fr));
+    gap: 12px;
+    width: min(100%, 360px);
+    margin: 28px auto 0;
+  }
+
+  .actions a {
+    justify-content: center;
+    min-height: 42px;
+    padding: 10px 12px;
+  }
+
   .quoteMain {
     grid-template-columns: 40px 1fr 40px;
     gap: 8px;
@@ -1544,7 +1625,7 @@ h1 {
   }
 
   .avatarPanel {
-    align-items: flex-start;
+    align-items: center;
   }
 
   .avatar {
