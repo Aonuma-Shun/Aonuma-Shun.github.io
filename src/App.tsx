@@ -946,7 +946,6 @@ function App() {
     quoteRestoreLabel: isChinese ? '展开语录栏' : 'Show quote dock',
     previousQuoteLabel: isChinese ? '上一句' : 'Previous quote',
     nextQuoteLabel: isChinese ? '下一句' : 'Next quote',
-    backToTopLabel: isChinese ? '回到顶部' : 'Back to top',
     eyebrow: isChinese
       ? '控制工程硕士生 · 北京理工大学'
       : 'M.Eng. Student · Control Engineering · Beijing Institute of Technology',
@@ -1053,15 +1052,9 @@ function App() {
 
   return (
     <main id="top" className="page">
-      <div className={`languageDock ${isCompactInitialLayout ? 'compactLanguageDock' : ''}`}>
-        {languageToggleControl}
+      <div className={`floatingTools ${isCompactInitialLayout ? 'compactFloatingTools' : ''}`}>
+        <div className="languageDock">{languageToggleControl}</div>
       </div>
-
-      {isCompactInitialLayout ? null : (
-        <a className="backToTopButton" href="#top" aria-label={copy.backToTopLabel}>
-          ↑
-        </a>
-      )}
 
       <header className={`hero ${isCompactInitialLayout ? 'compactHero' : ''}`}>
         {isCompactInitialLayout ? null : (
@@ -1070,7 +1063,7 @@ function App() {
               <div className="brand">{copy.brand}</div>
 
               <div className="navActions">
-                <div className="navLinks">
+                <div className={`navLinks ${isChinese ? 'zhNavLinks' : ''}`}>
                   <a href="#news">
                     <NavIcon name="news" />
                     {copy.nav[0]}
