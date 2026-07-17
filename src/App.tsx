@@ -319,6 +319,19 @@ const quotes: QuoteEntry[] = [
 
 const news: NewsItem[] = [
   {
+    date: 'Jul 2026',
+    title: 'IEEE CDC 2026',
+    text: (
+      <>
+        First-authored paper accepted in{' '}
+        <strong className="journalName">2026 IEEE Conference on Decision and Control</strong>
+        .
+      </>
+    ),
+    image: '/images/originals/news/CDC-2026.png',
+    imageAlt: 'Overview figure for the IEEE CDC 2026 paper',
+  },
+  {
     date: 'Jun 2026',
     title: 'IEEE TSP',
     text: (
@@ -390,6 +403,19 @@ const news: NewsItem[] = [
 ]
 
 const newsZh: NewsItem[] = [
+  {
+    date: '2026 年 7 月',
+    title: 'IEEE CDC 2026',
+    text: (
+      <>
+        第一作者论文被{' '}
+        <strong className="journalName">2026 IEEE Conference on Decision and Control</strong>{' '}
+        录用。
+      </>
+    ),
+    image: '/images/originals/news/CDC-2026.png',
+    imageAlt: 'IEEE CDC 2026 论文示意图',
+  },
   {
     date: '2026 年 6 月',
     title: 'IEEE TSP',
@@ -477,7 +503,7 @@ const publications: Publication[] = [
     venue: '2026 IEEE Conference on Decision and Control',
     year: '2026',
     role: 'First author',
-    status: 'Submitted to CDC · Under review',
+    status: 'Accepted by CDC 2026',
     description:
       'A Hessian-inverse-free prediction-correction method that uses an auxiliary flow to track time-varying convex optimization solutions without explicit matrix inversion.',
     tags: ['CDC', 'Time-varying optimization', 'Hessian-inverse-free'],
@@ -562,7 +588,7 @@ const publicationsZh: Publication[] = [
     venue: '2026 IEEE Conference on Decision and Control',
     year: '2026',
     role: '第一作者',
-    status: '已投稿至 CDC 2026 · 审稿中',
+    status: '已被 CDC 2026 录用',
     description:
       '提出一种无需 Hessian 逆矩阵的预测-校正方法，通过辅助流跟踪时变凸优化问题的最优解，避免显式矩阵求逆。',
     tags: ['CDC', '时变优化', '无需 Hessian 逆'],
