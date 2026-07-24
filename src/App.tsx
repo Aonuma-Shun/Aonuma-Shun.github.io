@@ -503,10 +503,16 @@ const publications: Publication[] = [
     venue: '2026 IEEE Conference on Decision and Control',
     year: '2026',
     role: 'First author',
-    status: 'Accepted by CDC 2026',
+    status: 'Accepted in July 2026',
     description:
       'A Hessian-inverse-free prediction-correction method that uses an auxiliary flow to track time-varying convex optimization solutions without explicit matrix inversion.',
     tags: ['CDC', 'Time-varying optimization', 'Hessian-inverse-free'],
+    links: [
+      {
+        label: 'Slide',
+        url: '/files/cdc-2026-report.pdf',
+      },
+    ],
   },
   {
     title:
@@ -588,10 +594,16 @@ const publicationsZh: Publication[] = [
     venue: '2026 IEEE Conference on Decision and Control',
     year: '2026',
     role: '第一作者',
-    status: '已被 CDC 2026 录用',
+    status: '2026 年 7 月录用',
     description:
       '提出一种无需 Hessian 逆矩阵的预测-校正方法，通过辅助流跟踪时变凸优化问题的最优解，避免显式矩阵求逆。',
     tags: ['CDC', '时变优化', '无需 Hessian 逆'],
+    links: [
+      {
+        label: 'Slide',
+        url: '/files/cdc-2026-report.pdf',
+      },
+    ],
   },
   {
     title:
