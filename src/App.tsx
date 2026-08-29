@@ -7,6 +7,7 @@ type NewsItem = {
   text: ReactNode
   image?: string
   imageAlt?: string
+  imageFallback?: boolean
 }
 
 type Publication = {
@@ -319,6 +320,17 @@ const quotes: QuoteEntry[] = [
 
 const news: NewsItem[] = [
   {
+    date: 'Aug 2026',
+    title: 'ICACR 2026',
+    text: (
+      <>
+        Co-authored paper accepted in{' '}
+        <strong className="journalName">2026 International Conference on Advanced Control and Robotics</strong>.
+      </>
+    ),
+    imageFallback: true,
+  },
+  {
     date: 'Jul 2026',
     title: 'IEEE CDC 2026',
     text: (
@@ -404,6 +416,18 @@ const news: NewsItem[] = [
 
 const newsZh: NewsItem[] = [
   {
+    date: '2026 年 8 月',
+    title: 'ICACR 2026',
+    text: (
+      <>
+        合作论文被{' '}
+        <strong className="journalName">2026 International Conference on Advanced Control and Robotics</strong>{' '}
+        录用。
+      </>
+    ),
+    imageFallback: true,
+  },
+  {
     date: '2026 年 7 月',
     title: 'IEEE CDC 2026',
     text: (
@@ -488,6 +512,25 @@ const newsZh: NewsItem[] = [
 ]
 
 const publications: Publication[] = [
+  {
+    title: 'Distributed Optimization with Anytime Coupling Constraints and Asymptotic Consensus',
+    authors: (
+      <>
+        Sule Wang, <strong className="myName">Zhonghao Lin</strong>
+        <sup className="correspondingAuthor" title="Corresponding author">
+          *
+        </sup>
+        , Xianlin Zeng
+      </>
+    ),
+    venue: '2026 International Conference on Advanced Control and Robotics',
+    year: '2026',
+    role: 'Corresponding author',
+    status: 'Accepted in Aug. 2026',
+    description:
+      'A continuous-time distributed method for consensus optimization with coupling constraints that remain satisfied throughout the trajectory, while consensus is achieved asymptotically.',
+    tags: ['ICACR', 'Distributed optimization', 'Coupling constraints'],
+  },
   {
     title:
       'Hessian-Inverse-Free Prediction-Correction Method for Time-Varying Convex Optimization',
@@ -579,6 +622,24 @@ const publications: Publication[] = [
 ]
 
 const publicationsZh: Publication[] = [
+  {
+    title: 'Distributed Optimization with Anytime Coupling Constraints and Asymptotic Consensus',
+    authors: (
+      <>
+        王素乐，<strong className="myName">林仲豪</strong>
+        <sup className="correspondingAuthor" title="通讯作者">
+          *
+        </sup>
+        ，曾宪琳
+      </>
+    ),
+    venue: '2026 International Conference on Advanced Control and Robotics',
+    year: '2026',
+    role: '通信作者',
+    status: '2026 年 8 月录用',
+    description: '提出一种连续时间分布式方法：在算法轨迹全程满足耦合约束的同时，实现渐近一致性优化。',
+    tags: ['ICACR', '分布式优化', '耦合约束'],
+  },
   {
     title:
       'Hessian-Inverse-Free Prediction-Correction Method for Time-Varying Convex Optimization',
@@ -1242,6 +1303,11 @@ function App() {
                   />
                   <span>{viewLabel}</span>
                 </button>
+              ) : item.imageFallback ? (
+                <div className="newsImageFallback" aria-label={`${item.title} preview coming soon`}>
+                  <span>{copy.publicationFallback[0]}</span>
+                  <strong>{copy.publicationFallback[1]}</strong>
+                </div>
               ) : null}
             </div>
           ))}
