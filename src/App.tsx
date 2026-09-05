@@ -320,6 +320,18 @@ const quotes: QuoteEntry[] = [
 
 const news: NewsItem[] = [
   {
+    date: 'Sep 2026',
+    title: 'Optimization Forum 2026',
+    text: (
+      <>
+        Delivered a 15-minute talk (in Chinese) on time-varying optimization at the{' '}
+        <strong className="journalName">
+          2026 PhD Student Frontier Forum on Optimization Algorithms, Software, and Applications
+        </strong>. I was fortunate to be the only master's student participant.
+      </>
+    ),
+  },
+  {
     date: 'Aug 2026',
     title: 'ICACR 2026',
     text: (
@@ -415,6 +427,15 @@ const news: NewsItem[] = [
 ]
 
 const newsZh: NewsItem[] = [
+  {
+    date: '2026 年 9 月',
+    title: '优化前沿研讨会',
+    text: (
+      <>
+        在<strong className="seminarTitle">2026 优化算法软件与应用博士研究生前沿研讨会</strong>作了约15分钟的中文报告，介绍时变优化相关工作。我很幸运能作为现场唯一的硕士生参会。
+      </>
+    ),
+  },
   {
     date: '2026 年 8 月',
     title: 'ICACR 2026',
@@ -586,6 +607,10 @@ const publications: Publication[] = [
         label: 'PDF',
         url: '/files/tsp-2026.pdf',
       },
+      {
+        label: 'Slide (in Chinese)',
+        url: '/files/opt-report-tsp.pdf',
+      },
     ],
   },
   {
@@ -694,6 +719,10 @@ const publicationsZh: Publication[] = [
       {
         label: 'PDF',
         url: '/files/tsp-2026.pdf',
+      },
+      {
+        label: '幻灯片（中文）',
+        url: '/files/opt-report-tsp.pdf',
       },
     ],
   },

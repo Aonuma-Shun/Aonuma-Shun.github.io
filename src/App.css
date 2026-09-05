@@ -644,6 +644,11 @@ h1 {
   font-weight: 800;
 }
 
+.timelineContent .seminarTitle {
+  color: #c8fff7;
+  font-weight: 800;
+}
+
 .newsImageButton {
   position: relative;
   height: 104px;
