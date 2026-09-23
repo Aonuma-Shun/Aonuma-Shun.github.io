@@ -142,6 +142,7 @@ const getRelativeQuoteRotation = (current: QuoteRotation, step: 1 | -1, quoteCou
   }
 }
 
+// Source passages and translation notes: docs/quote-sources.md.
 const quotes: QuoteEntry[] = [
   {
     en: {
@@ -156,18 +157,18 @@ const quotes: QuoteEntry[] = [
   },
   {
     en: {
-      text: 'Because of love, people see things that do not exist.',
+      text: 'Love is the single element that makes up the world.',
       source: 'Umineko When They Cry',
     },
     link: moegirlUrl('海猫鸣泣之时'),
     zh: {
-      text: '因为有爱，人才会看见并不存在的东西。',
+      text: '爱，是构成世界的唯一元素。',
       source: '海猫鸣泣之时',
     },
   },
   {
     en: {
-      text: 'Do you remember Archimedes’ principle?',
+      text: 'Do you know Archimedes’ principle?',
       source: 'Ever17: The Out of Infinity',
     },
     link: moegirlUrl('Ever17'),
@@ -178,67 +179,45 @@ const quotes: QuoteEntry[] = [
   },
   {
     en: {
-      text: 'Right now, I am in the place closest to heaven.',
-      source: 'Remember11: The Age of Infinity',
-    },
-    link: moegirlUrl('Remember11'),
-    zh: {
-      text: '我现在，身在离天国最近的地方。',
-      source: '无限轮回的时光',
-    },
-  },
-  {
-    en: {
-      text: 'If you simply surrender to fate, then everything ends there.',
+      text: 'With the will to try, even five minutes can change fate.',
       source: 'Higurashi When They Cry',
     },
     link: moegirlUrl('寒蝉鸣泣之时'),
     zh: {
-      text: '如果只是屈服于命运，那一切就结束了。',
+      text: '只要愿意，短短五分钟也能改变命运。',
       source: '寒蝉鸣泣之时',
     },
   },
   {
     en: {
-      text: 'Deceive your original self. Deceive the world.',
+      text: 'No one knows the future. That is why its possibilities are endless.',
       source: 'Steins;Gate',
     },
     link: moegirlUrl('Steins;Gate'),
     zh: {
-      text: '欺骗最初的自己，欺骗世界。',
+      text: '未来无人知晓，正因如此，才有无限可能。',
       source: '命运石之门',
     },
   },
   {
     en: {
-      text: "Don't underestimate humanity!!",
-      source: 'Muv-Luv Alternative',
-    },
-    link: moegirlUrl('Muv-Luv Alternative'),
-    zh: {
-      text: '别小看人类了啊啊啊啊！！',
-      source: 'Muv-Luv Alternative',
-    },
-  },
-  {
-    en: {
-      text: 'Live happily. That is all.',
+      text: 'Live happily.',
       source: 'Wonderful Everyday',
     },
     link: moegirlUrl('素晴日'),
     zh: {
-      text: '幸福地活下去，仅此而已。',
+      text: '幸福地活下去。',
       source: '美好的每一天',
     },
   },
   {
     en: {
-      text: 'Could her fate also be rewritten?',
+      text: 'Could her fate be rewritten?',
       source: 'Rewrite',
     },
     link: 'https://zh.moegirl.org.cn/Rewrite%28%E6%B8%B8%E6%88%8F%29',
     zh: {
-      text: '她的命运，是否也有可能被改写？',
+      text: '她的命运，能否改写？',
       source: '罚抄',
     },
   },
@@ -255,68 +234,24 @@ const quotes: QuoteEntry[] = [
   },
   {
     en: {
-      text: 'Do not drown in memories. Happy days still lie ahead.',
+      text: 'The world is beautiful, even when filled with sorrow and tears.',
       source: 'CLANNAD',
     },
     link: moegirlUrl('CLANNAD'),
     zh: {
-      text: '不要沉溺于回忆，幸福的时光还在前方。',
+      text: '世界是美丽的，即使充满悲伤与泪水。',
       source: '团子大家族',
     },
   },
   {
     en: {
-      text: 'Summer continues to where as well, she is waiting in the air.',
+      text: 'Summer stretches on without end.',
       source: 'AIR',
     },
     link: moegirlUrl('AIR'),
     zh: {
-      text: '夏日仍在某处延续，她正在天空中等待。',
+      text: '夏日绵延不尽。',
       source: '青空',
-    },
-  },
-  {
-    en: {
-      text: 'This is a story of carrying one’s convictions through.',
-      source: 'Fate/stay night',
-    },
-    link: moegirlUrl('Fate/stay night'),
-    zh: {
-      text: '此为，贯彻信念的故事。',
-      source: '命运之夜',
-    },
-  },
-  {
-    en: {
-      text: 'You can bear them only because they are not your tragedy.',
-      source: 'The House in Fata Morgana',
-    },
-    link: 'https://zh.moegirl.org.cn/%E6%B5%B7%E5%B8%82%E8%9C%83%E6%A5%BC%E4%B9%8B%E9%A6%86',
-    zh: {
-      text: '正因为是别人的悲剧，所以才能承受。',
-      source: '海市蜃楼之馆',
-    },
-  },
-  {
-    en: {
-      text: 'This is not a story about heroes.',
-      source: 'Full Metal Daemon Muramasa',
-    },
-    link: moegirlUrl('装甲恶鬼村正'),
-    zh: {
-      text: '这不是英雄的故事。',
-      source: '装甲恶鬼村正',
-    },
-  },
-  {
-    en: {
-      text: 'This is the Ultramarine Broadcast Club. Is anyone still out there?',
-      source: 'CROSS†CHANNEL',
-    },
-    link: moegirlUrl('CROSS†CHANNEL'),
-    zh: {
-      text: '这里是群青广播社，还有人在那吗？',
-      source: '交错†频道',
     },
   },
 ]
@@ -1660,7 +1595,7 @@ function App() {
                 <div className="interestContent">
                   <div className="interestCardHeading">
                     <div><div className="interestIcon">01</div><h3>推理小说</h3></div>
-                    <span className="interestCameo" aria-hidden="true"><img src="/theme/beatrice-cameo.webp" alt="" width="184" height="200" loading="lazy" /></span>
+                    <span className="interestCameo interestCameoBeatrice" aria-hidden="true"><img src="/theme/beatrice-cameo.webp" alt="" width="184" height="200" loading="lazy" /></span>
                   </div>
                   <p>
                     {'我阅读过大量推理小说，喜欢的作家包括'}
@@ -1696,7 +1631,7 @@ function App() {
                 <div className="interestContent">
                   <div className="interestCardHeading">
                     <div><div className="interestIcon">02</div><h3>视觉小说</h3></div>
-                    <span className="interestCameo" aria-hidden="true"><img src="/theme/bernkastel-cameo.webp" alt="" width="76" height="200" loading="lazy" /></span>
+                    <span className="interestCameo interestCameoBernkastel" aria-hidden="true"><img src="/theme/bernkastel-cameo.webp" alt="" width="76" height="200" loading="lazy" /></span>
                   </div>
                   <p>
                     {'我也看过许多悬疑推理向视觉小说。最喜欢的是鸣泣之时系列，包括寒蝉鸣泣之时与海猫鸣泣之时；从我的头像可推断出，最喜欢的角色是'}
@@ -1743,7 +1678,7 @@ function App() {
                 <div className="interestContent">
                   <div className="interestCardHeading">
                     <div><div className="interestIcon">03</div><h3>动画</h3></div>
-                    <span className="interestCameo" aria-hidden="true"><img src="/theme/lambdadelta-cameo.webp" alt="" width="113" height="200" loading="lazy" /></span>
+                    <span className="interestCameo interestCameoLambdadelta" aria-hidden="true"><img src="/theme/lambdadelta-cameo.webp" alt="" width="113" height="200" loading="lazy" /></span>
                   </div>
                   <p>
                     {'悬疑类动画看过很多，这里不一一列举。总体来说，我偏爱那些兼具氛围、心理张力和扎实谜题结构的作品。《来自新世界》是其中非常喜欢的一部。从本网站名不难推断出，我最喜欢的角色是'}
@@ -1795,7 +1730,7 @@ function App() {
                 <div className="interestContent">
                   <div className="interestCardHeading">
                     <div><div className="interestIcon">01</div><h3>Detective Fiction</h3></div>
-                    <span className="interestCameo" aria-hidden="true"><img src="/theme/beatrice-cameo.webp" alt="" width="184" height="200" loading="lazy" /></span>
+                    <span className="interestCameo interestCameoBeatrice" aria-hidden="true"><img src="/theme/beatrice-cameo.webp" alt="" width="184" height="200" loading="lazy" /></span>
                   </div>
                   <p>
                     I have read a wide range of detective novels. Some of my favorite writers
@@ -1833,7 +1768,7 @@ function App() {
                 <div className="interestContent">
                   <div className="interestCardHeading">
                     <div><div className="interestIcon">02</div><h3>Visual Novels</h3></div>
-                    <span className="interestCameo" aria-hidden="true"><img src="/theme/bernkastel-cameo.webp" alt="" width="76" height="200" loading="lazy" /></span>
+                    <span className="interestCameo interestCameoBernkastel" aria-hidden="true"><img src="/theme/bernkastel-cameo.webp" alt="" width="76" height="200" loading="lazy" /></span>
                   </div>
                   <p>
                     I have also enjoyed many mystery-oriented visual novels. My favorite is the{' '}
@@ -1888,7 +1823,7 @@ function App() {
                 <div className="interestContent">
                   <div className="interestCardHeading">
                     <div><div className="interestIcon">03</div><h3>Anime</h3></div>
-                    <span className="interestCameo" aria-hidden="true"><img src="/theme/lambdadelta-cameo.webp" alt="" width="113" height="200" loading="lazy" /></span>
+                    <span className="interestCameo interestCameoLambdadelta" aria-hidden="true"><img src="/theme/lambdadelta-cameo.webp" alt="" width="113" height="200" loading="lazy" /></span>
                   </div>
                   <p>
                     I have watched countless mystery and suspense anime, far too many to

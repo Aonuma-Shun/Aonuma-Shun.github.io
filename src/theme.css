@@ -90,6 +90,10 @@ body {
 .sakuOutline { stroke: rgba(var(--gold-rgb), 0.48); }
 .sakuScarf { stroke: rgba(var(--red-rgb), 0.62); }
 .sakuFeature { fill: rgba(var(--gold-rgb), 0.4); }
+.sakuInset { stroke-width: 1.5; opacity: 0.78; }
+.sakuStitch { stroke-width: 1.1; stroke-dasharray: 1 6; opacity: 0.5; }
+.sakuPin { stroke: rgba(var(--gold-rgb), 0.65); stroke-width: 1.6; }
+.sakuBlush { stroke: rgba(var(--red-rgb), 0.42); stroke-width: 1.4; }
 
 :root[data-theme="warm"] .atmosphereMark { opacity: 0.46; }
 :root[data-theme="warm"] .sakuOutline { stroke: rgba(var(--gold-rgb), 0.38); }
@@ -236,11 +240,15 @@ h1 { font-size: 64px; letter-spacing: 0; }
 .interestCameo img {
   display: block;
   width: auto;
-  height: 128px;
+  height: var(--cameo-height);
   max-width: none;
   flex-shrink: 0;
   opacity: 0.85;
 }
+/* Match portrait scale: Beatrice is a bust, the other sources are full-body. */
+.interestCameoBeatrice { --cameo-height: 116px; }
+.interestCameoBernkastel { --cameo-height: 192px; }
+.interestCameoLambdadelta { --cameo-height: 176px; }
 .navLinks a:nth-child(2n) .navIcon { color: var(--red); }
 .navLinks a:nth-child(2n + 1) .navIcon { color: var(--blue); }
 .navLinks a:hover, .quoteDetails a:hover,
