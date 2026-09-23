@@ -4,6 +4,15 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      // Apply the saved palette before the first paint.
+      try {
+        document.documentElement.dataset.theme =
+          localStorage.getItem('zh-homepage-theme') === 'warm' ? 'warm' : 'cool';
+      } catch {
+        document.documentElement.dataset.theme = 'cool';
+      }
+    </script>
     <title>Zhonghao Lin | Personal Homepage</title>
     <meta
       name="description"

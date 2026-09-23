@@ -1,5 +1,7 @@
-import { useEffect, useState, type ReactNode } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 'react'
+import SiteAtmosphere from './SiteAtmosphere'
 import './App.css'
+import './theme.css'
 
 type NewsItem = {
   date: string
@@ -46,6 +48,7 @@ type QuoteEntry = {
 }
 
 type Language = 'en' | 'zh'
+type Theme = 'cool' | 'warm'
 
 type QuoteRotation = {
   order: number[]
@@ -330,6 +333,8 @@ const news: NewsItem[] = [
         </strong>. I was fortunate to be the only master's student participant.
       </>
     ),
+    image: '/images/originals/news/Workshop-2026.png',
+    imageAlt: 'Group photo at the 2026 PhD Student Frontier Forum on Optimization Algorithms, Software, and Applications',
   },
   {
     date: 'Aug 2026',
@@ -435,6 +440,8 @@ const newsZh: NewsItem[] = [
         在<strong className="seminarTitle">2026 优化算法软件与应用博士研究生前沿研讨会</strong>作了约15分钟的中文报告，介绍时变优化相关工作。我很幸运能作为现场唯一的硕士生参会。
       </>
     ),
+    image: '/images/originals/news/Workshop-2026.png',
+    imageAlt: '2026 优化算法软件与应用博士研究生前沿研讨会合影',
   },
   {
     date: '2026 年 8 月',
@@ -1013,12 +1020,18 @@ function NavIcon({ name }: { name: NavIconName }) {
 
 function App() {
   const [language, setLanguage] = useState<Language>('en')
+  const [theme, setTheme] = useState<Theme>(() =>
+    document.documentElement.dataset.theme === 'warm' ? 'warm' : 'cool',
+  )
   const [isCompactInitialLayout] = useState(getInitialCompactLayout)
   const [showRealPhoto, setShowRealPhoto] = useState(false)
   const [quoteRotation, setQuoteRotation] = useState<QuoteRotation>(() => ({
     order: createShuffledQuoteOrder(quotes.length),
     position: 0,
   }))
+  const [pendingQuoteRotation, setPendingQuoteRotation] = useState<QuoteRotation | null>(null)
+  const quoteBodyRef = useRef<HTMLButtonElement>(null)
+  const [quoteHeight, setQuoteHeight] = useState<number>()
   const [isQuoteExpanded, setIsQuoteExpanded] = useState(false)
   const [isQuoteHidden, setIsQuoteHidden] = useState(false)
   const isQuoteSuppressed = isCompactInitialLayout
@@ -1151,37 +1164,90 @@ function App() {
     </button>
   )
 
-  const showPreviousQuote = () => {
-    setQuoteRotation((current) => getRelativeQuoteRotation(current, -1, quotes.length))
+  const requestQuoteChange = useCallback((step: 1 | -1) => {
+    // Accumulate rapid clicks against the pending destination, not the fading text.
+    setPendingQuoteRotation((pending) =>
+      getRelativeQuoteRotation(pending ?? quoteRotation, step, quotes.length),
+    )
     setIsQuoteExpanded(false)
-  }
+  }, [quoteRotation])
 
-  const showNextQuote = () => {
-    setQuoteRotation((current) => getRelativeQuoteRotation(current, 1, quotes.length))
-    setIsQuoteExpanded(false)
-  }
+  const showPreviousQuote = () => requestQuoteChange(-1)
+  const showNextQuote = () => requestQuoteChange(1)
+
+  useEffect(() => {
+    if (!pendingQuoteRotation) return
+
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    // Matches the outgoing opacity transition in App.css.
+    const timeoutId = window.setTimeout(() => {
+      setQuoteRotation(pendingQuoteRotation)
+      setPendingQuoteRotation(null)
+    }, reducedMotion ? 0 : 180)
+
+    return () => window.clearTimeout(timeoutId)
+  }, [pendingQuoteRotation])
+
+  useLayoutEffect(() => {
+    const body = quoteBodyRef.current
+    if (!body) return
+
+    const measure = () => setQuoteHeight(Math.ceil(body.getBoundingClientRect().height))
+    measure()
+    const observer = new ResizeObserver(measure)
+    observer.observe(body)
+    return () => observer.disconnect()
+  }, [isQuoteHidden, isQuoteSuppressed])
 
   useEffect(() => {
     setLastUpdatedDate(getLastUpdatedDate())
   }, [])
 
   useEffect(() => {
-    if (isQuoteSuppressed) {
+    document.documentElement.dataset.theme = theme
+    try {
+      localStorage.setItem('zh-homepage-theme', theme)
+    } catch {
+      // Theme switching still works when browser storage is unavailable.
+    }
+  }, [theme])
+
+  useEffect(() => {
+    if (isQuoteSuppressed || isQuoteHidden || pendingQuoteRotation) {
       return undefined
     }
 
     const timeoutId = window.setTimeout(() => {
-      setQuoteRotation((current) => getRelativeQuoteRotation(current, 1, quotes.length))
-      setIsQuoteExpanded(false)
+      requestQuoteChange(1)
     }, 12000)
 
     return () => window.clearTimeout(timeoutId)
-  }, [isQuoteSuppressed, quoteRotation])
+  }, [isQuoteSuppressed, isQuoteHidden, pendingQuoteRotation, requestQuoteChange])
 
   return (
+    <>
+    <SiteAtmosphere />
     <main id="top" className="page">
       <div className={`floatingTools ${isCompactInitialLayout ? 'compactFloatingTools' : ''}`}>
         <div className="languageDock">{languageToggleControl}</div>
+        <div className="themeToggle" role="group" aria-label={isChinese ? '页面色调' : 'Page theme'}>
+          {(['cool', 'warm'] as const).map((tone) => (
+            <button
+              key={tone}
+              type="button"
+              aria-pressed={theme === tone}
+              title={tone === 'cool'
+                ? (isChinese ? '冷色夜间主题' : 'Cool night theme')
+                : (isChinese ? '暖色纸张主题' : 'Warm paper theme')}
+              onClick={() => setTheme(tone)}
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <use href={`/theme/icons.svg#${tone === 'cool' ? 'moon' : 'sun'}`} />
+              </svg>
+              <span>{tone === 'cool' ? (isChinese ? '冷色' : 'Night') : (isChinese ? '暖色' : 'Paper')}</span>
+            </button>
+          ))}
+        </div>
       </div>
 
       <header className={`hero ${isCompactInitialLayout ? 'compactHero' : ''}`}>
@@ -1592,8 +1658,10 @@ function App() {
                   />
                 </button>
                 <div className="interestContent">
-                  <div className="interestIcon">01</div>
-                  <h3>推理小说</h3>
+                  <div className="interestCardHeading">
+                    <div><div className="interestIcon">01</div><h3>推理小说</h3></div>
+                    <span className="interestCameo" aria-hidden="true"><img src="/theme/beatrice-cameo.webp" alt="" width="184" height="200" loading="lazy" /></span>
+                  </div>
                   <p>
                     {'我阅读过大量推理小说，喜欢的作家包括'}
                     <em>埃勒里·奎因</em>
@@ -1626,8 +1694,10 @@ function App() {
                   <span>贝伦卡斯泰露 / 古手梨花</span>
                 </button>
                 <div className="interestContent">
-                  <div className="interestIcon">02</div>
-                  <h3>视觉小说</h3>
+                  <div className="interestCardHeading">
+                    <div><div className="interestIcon">02</div><h3>视觉小说</h3></div>
+                    <span className="interestCameo" aria-hidden="true"><img src="/theme/bernkastel-cameo.webp" alt="" width="76" height="200" loading="lazy" /></span>
+                  </div>
                   <p>
                     {'我也看过许多悬疑推理向视觉小说。最喜欢的是鸣泣之时系列，包括寒蝉鸣泣之时与海猫鸣泣之时；从我的头像可推断出，最喜欢的角色是'}
                     <a
@@ -1671,8 +1741,10 @@ function App() {
                   />
                 </button>
                 <div className="interestContent">
-                  <div className="interestIcon">03</div>
-                  <h3>动画</h3>
+                  <div className="interestCardHeading">
+                    <div><div className="interestIcon">03</div><h3>动画</h3></div>
+                    <span className="interestCameo" aria-hidden="true"><img src="/theme/lambdadelta-cameo.webp" alt="" width="113" height="200" loading="lazy" /></span>
+                  </div>
                   <p>
                     {'悬疑类动画看过很多，这里不一一列举。总体来说，我偏爱那些兼具氛围、心理张力和扎实谜题结构的作品。《来自新世界》是其中非常喜欢的一部。从本网站名不难推断出，我最喜欢的角色是'}
                     <a
@@ -1721,8 +1793,10 @@ function App() {
                   />
                 </button>
                 <div className="interestContent">
-                  <div className="interestIcon">01</div>
-                  <h3>Detective Fiction</h3>
+                  <div className="interestCardHeading">
+                    <div><div className="interestIcon">01</div><h3>Detective Fiction</h3></div>
+                    <span className="interestCameo" aria-hidden="true"><img src="/theme/beatrice-cameo.webp" alt="" width="184" height="200" loading="lazy" /></span>
+                  </div>
                   <p>
                     I have read a wide range of detective novels. Some of my favorite writers
                     include <em>Ellery Queen</em>, <em>Takekuni Kitayama</em>, and{' '}
@@ -1757,8 +1831,10 @@ function App() {
                   <span>Bernkastel / Rika</span>
                 </button>
                 <div className="interestContent">
-                  <div className="interestIcon">02</div>
-                  <h3>Visual Novels</h3>
+                  <div className="interestCardHeading">
+                    <div><div className="interestIcon">02</div><h3>Visual Novels</h3></div>
+                    <span className="interestCameo" aria-hidden="true"><img src="/theme/bernkastel-cameo.webp" alt="" width="76" height="200" loading="lazy" /></span>
+                  </div>
                   <p>
                     I have also enjoyed many mystery-oriented visual novels. My favorite is the{' '}
                     <span className="interestTitle">When They Cry</span> series, including{' '}
@@ -1810,8 +1886,10 @@ function App() {
                   />
                 </button>
                 <div className="interestContent">
-                  <div className="interestIcon">03</div>
-                  <h3>Anime</h3>
+                  <div className="interestCardHeading">
+                    <div><div className="interestIcon">03</div><h3>Anime</h3></div>
+                    <span className="interestCameo" aria-hidden="true"><img src="/theme/lambdadelta-cameo.webp" alt="" width="113" height="200" loading="lazy" /></span>
+                  </div>
                   <p>
                     I have watched countless mystery and suspense anime, far too many to
                     list here. In general, I enjoy works that combine atmosphere,
@@ -1849,7 +1927,7 @@ function App() {
           {copy.quoteTitle}
         </button>
       ) : (
-        <section className="quotePanel quoteDock" aria-label={copy.quoteTitle}>
+        <section className="quotePanel quoteDock" aria-label={copy.quoteTitle} aria-busy={pendingQuoteRotation !== null}>
           <button
             className="quoteHide"
             type="button"
@@ -1867,17 +1945,22 @@ function App() {
               ←
             </button>
 
-            <button
-              className="quoteBody"
-              type="button"
-              onClick={() => setIsQuoteExpanded((current) => !current)}
-              aria-expanded={isQuoteExpanded}
-            >
-              <blockquote>
-                {isChinese ? `「${currentQuoteContent.text}」` : `“${currentQuoteContent.text}”`}
-              </blockquote>
-              <cite>{isChinese ? `《${currentQuoteContent.source}》` : currentQuoteContent.source}</cite>
-            </button>
+            <div className="quoteViewport" style={{ height: quoteHeight }}>
+              <button
+                ref={quoteBodyRef}
+                className={`quoteBody ${pendingQuoteRotation ? 'isChanging' : ''}`}
+                type="button"
+                onClick={() => {
+                  if (!pendingQuoteRotation) setIsQuoteExpanded((current) => !current)
+                }}
+                aria-expanded={isQuoteExpanded}
+              >
+                <blockquote>
+                  {isChinese ? `「${currentQuoteContent.text}」` : `“${currentQuoteContent.text}”`}
+                </blockquote>
+                <cite>{isChinese ? `《${currentQuoteContent.source}》` : currentQuoteContent.source}</cite>
+              </button>
+            </div>
 
             <button type="button" onClick={showNextQuote} aria-label={copy.nextQuoteLabel}>
               →
@@ -1922,6 +2005,7 @@ function App() {
         </div>
       ) : null}
     </main>
+    </>
   )
 }
 
