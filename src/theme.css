@@ -209,16 +209,7 @@ h1 { font-size: 64px; letter-spacing: 0; }
 .section { --section-color: var(--blue); }
 #publications, #interests { --section-color: var(--red); }
 #moments { --section-color: var(--gold); }
-.sectionHeader p { color: var(--section-color); }
 .sectionHeader h2 { color: var(--section-color); }
-.sectionHeader::after {
-  content: "";
-  height: 1px;
-  flex: 1;
-  align-self: center;
-  margin-left: 10px;
-  background: linear-gradient(90deg, rgba(var(--line-rgb), 0.36), transparent);
-}
 .interestCardHeading {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 62px;
@@ -249,8 +240,10 @@ h1 { font-size: 64px; letter-spacing: 0; }
 .interestCameoBeatrice { --cameo-height: 116px; }
 .interestCameoBernkastel { --cameo-height: 192px; }
 .interestCameoLambdadelta { --cameo-height: 176px; }
-.navLinks a:nth-child(2n) .navIcon { color: var(--red); }
-.navLinks a:nth-child(2n + 1) .navIcon { color: var(--blue); }
+.navLinks a { --nav-accent: var(--blue); }
+.navLinks a:nth-child(2n) { --nav-accent: var(--red); }
+.navLinks a:nth-child(3) { --nav-accent: var(--gold); }
+.navLinks a .navIcon { color: var(--nav-accent); }
 .navLinks a:hover, .quoteDetails a:hover,
 .quoteMain > button:not(.quoteBody):hover, .quoteHide:hover { color: var(--ink); }
 
@@ -353,6 +346,9 @@ h1 { font-size: 64px; letter-spacing: 0; }
 }
 
 @media (max-width: 380px) {
+  .sectionHeader { grid-template-columns: 32px minmax(0, 1fr); gap: 12px; padding: 18px 14px; }
+  .sectionHeader h2 { font-size: 24px; }
+  .chapterWing { width: 32px; height: 48px; }
   h1 { font-size: 42px; }
   .actions { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .actions a { padding: 10px 8px; font-size: 13px; }

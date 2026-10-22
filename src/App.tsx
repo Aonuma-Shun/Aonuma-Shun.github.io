@@ -280,7 +280,8 @@ const news: NewsItem[] = [
         <strong className="journalName">2026 International Conference on Advanced Control and Robotics</strong>.
       </>
     ),
-    imageFallback: true,
+    image: '/images/originals/news/ICACR-2026.jpg',
+    imageAlt: 'Conference photo at ICACR 2026',
   },
   {
     date: 'Jul 2026',
@@ -388,7 +389,8 @@ const newsZh: NewsItem[] = [
         录用。
       </>
     ),
-    imageFallback: true,
+    image: '/images/originals/news/ICACR-2026.jpg',
+    imageAlt: 'ICACR 2026 参会照片',
   },
   {
     date: '2026 年 7 月',
@@ -492,7 +494,18 @@ const publications: Publication[] = [
     status: 'Accepted in Aug. 2026',
     description:
       'A continuous-time distributed method for consensus optimization with coupling constraints that remain satisfied throughout the trajectory, while consensus is achieved asymptotically.',
+    image: '/images/originals/publications/ICACR-2026.png',
     tags: ['ICACR', 'Distributed optimization', 'Coupling constraints'],
+    links: [
+      {
+        label: 'PDF',
+        url: '/files/icacr-2026-paper.pdf',
+      },
+      {
+        label: 'Slides',
+        url: '/files/ICACR-2026.pdf',
+      },
+    ],
   },
   {
     title:
@@ -512,8 +525,13 @@ const publications: Publication[] = [
     status: 'Accepted in July 2026',
     description:
       'A Hessian-inverse-free prediction-correction method that uses an auxiliary flow to track time-varying convex optimization solutions without explicit matrix inversion.',
+    image: '/images/originals/publications/CDC-2026.png',
     tags: ['CDC', 'Time-varying optimization', 'Hessian-inverse-free'],
     links: [
+      {
+        label: 'PDF',
+        url: '/files/cdc-2026-paper.pdf',
+      },
       {
         label: 'Slide',
         url: '/files/cdc-2026-report.pdf',
@@ -605,7 +623,18 @@ const publicationsZh: Publication[] = [
     role: '通信作者',
     status: '2026 年 8 月录用',
     description: '提出一种连续时间分布式方法：在算法轨迹全程满足耦合约束的同时，实现渐近一致性优化。',
+    image: '/images/originals/publications/ICACR-2026.png',
     tags: ['ICACR', '分布式优化', '耦合约束'],
+    links: [
+      {
+        label: 'PDF',
+        url: '/files/icacr-2026-paper.pdf',
+      },
+      {
+        label: '幻灯片',
+        url: '/files/ICACR-2026.pdf',
+      },
+    ],
   },
   {
     title:
@@ -625,10 +654,15 @@ const publicationsZh: Publication[] = [
     status: '2026 年 7 月录用',
     description:
       '提出一种无需 Hessian 逆矩阵的预测-校正方法，通过辅助流跟踪时变凸优化问题的最优解，避免显式矩阵求逆。',
+    image: '/images/originals/publications/CDC-2026.png',
     tags: ['CDC', '时变优化', '无需 Hessian 逆'],
     links: [
       {
-        label: 'Slide',
+        label: 'PDF',
+        url: '/files/cdc-2026-paper.pdf',
+      },
+      {
+        label: '幻灯片',
         url: '/files/cdc-2026-report.pdf',
       },
     ],
@@ -950,6 +984,26 @@ function NavIcon({ name }: { name: NavIconName }) {
     >
       {iconPaths[name]}
     </svg>
+  )
+}
+
+function ChapterHeading({ number, title, isChinese }: {
+  number: string
+  title: string
+  isChinese: boolean
+}) {
+  return (
+    <div className={`sectionHeader ${isChinese ? 'zhChapterHeader' : ''}`}>
+      <span className="chapterWing" aria-hidden="true" />
+      <div className="chapterTitle">
+        <p className="chapterNumber">
+          <span aria-hidden="true" className="chapterDiamond" />
+          {isChinese ? `第 ${number} 章` : `EPISODE ${number}`}
+        </p>
+        <h2>{title}</h2>
+      </div>
+      <span className="chapterFolio" aria-hidden="true">{['I', 'II', 'III', 'IV'][Number(number) - 1]}</span>
+    </div>
   )
 }
 
@@ -1300,10 +1354,7 @@ function App() {
       </a>
 
       <section id="news" className="section">
-        <div className="sectionHeader">
-          <p>01</p>
-          <h2>{copy.sections[0]}</h2>
-        </div>
+        <ChapterHeading number="01" title={copy.sections[0]} isChinese={isChinese} />
 
         <div className="timeline">
           {visibleNews.map((item) => (
@@ -1345,10 +1396,7 @@ function App() {
       </section>
 
      <section id="publications" className="section">
-  <div className="sectionHeader">
-    <p>02</p>
-    <h2>{copy.sections[1]}</h2>
-  </div>
+  <ChapterHeading number="02" title={copy.sections[1]} isChinese={isChinese} />
 
   <div className="publicationYearList">
     {visiblePublicationGroups.map((group) => (
@@ -1430,10 +1478,7 @@ function App() {
 </section>
 
       <section id="moments" className="section">
-        <div className="sectionHeader">
-          <p>03</p>
-          <h2>{copy.sections[2]}</h2>
-        </div>
+        <ChapterHeading number="03" title={copy.sections[2]} isChinese={isChinese} />
 
         <p className="sectionIntro">{copy.momentsIntro}</p>
 
@@ -1559,10 +1604,7 @@ function App() {
       </section>
 
       <section id="interests" className="section">
-        <div className="sectionHeader">
-          <p>04</p>
-          <h2>{copy.sections[3]}</h2>
-        </div>
+        <ChapterHeading number="04" title={copy.sections[3]} isChinese={isChinese} />
 
         {isChinese ? (
           <div className="interestShowcase">
@@ -1850,6 +1892,9 @@ function App() {
 
       <footer className="footer">
         <p>{copy.footer}</p>
+        <a className="artworkCredits" href="/theme/credits.txt" target="_blank" rel="noopener noreferrer">
+          {isChinese ? '纹章图形署名' : 'Crest artwork credits'}
+        </a>
       </footer>
 
       {isQuoteSuppressed ? null : isQuoteHidden ? (

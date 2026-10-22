@@ -1,0 +1,18 @@
+One-Winged Eagle artwork
+=======================
+
+Reference: Umineko One-Winged Eagle by Sakretsu91 (2014).
+Source: https://commons.wikimedia.org/wiki/File:Umineko_One-Winged_Eagle.png
+Reference revision: https://upload.wikimedia.org/wikipedia/commons/archive/6/65/20150129142008%21Umineko_One-Winged_Eagle.png
+License: Creative Commons Attribution-ShareAlike 3.0 Unported
+https://creativecommons.org/licenses/by-sa/3.0/
+
+Adaptations: /theme/golden-wing.svg and /favicon.svg.
+Changes: simplified vector silhouette, adjusted small-size contours,
+monochrome chapter treatment and a gold-on-dark favicon composition.
+These adapted artworks are distributed under CC BY-SA 3.0.
+This license notice applies to these artworks, not to the site's papers,
+photographs, or other unrelated content.
+
+Umineko When They Cry and its original fictional crest belong to their
+respective rights holders. This personal site is not officially affiliated.
