@@ -1058,7 +1058,7 @@ function App() {
   const visibleGroupMoments = isChinese ? groupMomentsZh : groupMoments
   const formattedLastUpdatedDate = formatLastUpdatedDate(lastUpdatedDate, language)
   const copy = {
-    brand: isChinese ? '欢迎来到林仲豪的主页 (^_^)' : 'Welcome to Zhonghao\'s Homepage (^_^)',
+    brand: isChinese ? '欢迎来到仲豪的个人主页！' : 'Welcome to Zhonghao\'s Homepage!',
     languageToggle: isChinese ? 'EN' : '中文',
     languageToggleSub: isChinese ? 'Switch' : '切换',
     switchLanguageLabel: isChinese ? 'Switch to English' : '切换到中文版本',
@@ -1243,26 +1243,18 @@ function App() {
         {isCompactInitialLayout ? null : (
           <>
             <nav className="nav">
-              <div className="brand">{copy.brand}</div>
+              <div className={`brand ${isChinese ? 'zhBrand' : ''}`}>
+                <span className="brandWelcome">{copy.brand}</span>
+              </div>
 
               <div className="navActions">
                 <div className={`navLinks ${isChinese ? 'zhNavLinks' : ''}`}>
-                  <a href="#news">
-                    <NavIcon name="news" />
-                    {copy.nav[0]}
-                  </a>
-                  <a href="#publications">
-                    <NavIcon name="publications" />
-                    {copy.nav[1]}
-                  </a>
-                  <a href="#moments">
-                    <NavIcon name="moments" />
-                    {copy.nav[2]}
-                  </a>
-                  <a href="#interests">
-                    <NavIcon name="interests" />
-                    {copy.nav[3]}
-                  </a>
+                  {(['news', 'publications', 'moments', 'interests'] as const).map((section, index) => (
+                    <a href={`#${section}`} key={section}>
+                      <span className="navIndex" aria-hidden="true">{['I', 'II', 'III', 'IV'][index]}</span>
+                      <span className="navLabel"><NavIcon name={section} />{copy.nav[index]}</span>
+                    </a>
+                  ))}
                 </div>
               </div>
             </nav>
@@ -1344,7 +1336,7 @@ function App() {
         target="_blank"
         rel="noreferrer"
       >
-        <span>{isChinese ? '研究速览' : 'Research Overview'}</span>
+        <span className="researchTitle"><span className="researchChess" aria-hidden="true">♜</span>{isChinese ? '研究速览' : 'Research Overview'}</span>
         <p>
           {isChinese
             ? '如果您想大致了解我目前的研究内容，可以查看这份关于时变优化的中文学术幻灯片。'
